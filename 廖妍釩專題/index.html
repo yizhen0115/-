@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>三分時緒 · 自創品牌</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;700;900&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   TOKENS  (原始PPT色系，不加深)
+───────────────────────────────────────── */
+:root{
+  --sour:   #b5a84a; --sour-bg: #ede8d5;
+  --sweet:  #a0581e; --sweet-bg:#e9d9c6;
+  --bitter: #4a5e4d; --bitter-bg:#d8dfd4;
+  --ink:    #1a1a18; --paper:   #ffffff;
+  --cream:  #F4F1EA; --line:    rgba(26,26,24,.09);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Serif TC',serif;font-weight:300;
+  background:var(--cream);color:var(--ink);
+  overflow-x:hidden;-webkit-tap-highlight-color:transparent;
+}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--sour);border-radius:99px}
+img{display:block;max-width:100%;height:auto}
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  height:58px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;
+  background:rgba(244,241,234,.94);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.nav-logo{font-family:'Noto Serif TC',serif;font-weight:900;font-size:14px;letter-spacing:.28em;color:var(--ink);text-decoration:none}
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{padding:7px 14px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:300;font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink);opacity:.45;transition:opacity .2s,background .2s}
+.nav-links a:hover,.nav-links a.on{opacity:1;background:rgba(26,26,24,.07)}
+.nav-right{display:flex;gap:10px;align-items:center}
+.nav-cart-btn{
+  display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;
+  background:var(--ink);color:var(--cream);border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  transition:opacity .2s;position:relative;
+}
+.nav-cart-btn:hover{opacity:.75}
+.cbadge{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--sweet);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:500;opacity:0;transition:opacity .3s}
+.cbadge.on{opacity:1}
+#hbg{display:none;flex-direction:column;gap:5px;width:36px;height:36px;justify-content:center;align-items:center;border:none;background:transparent;cursor:pointer}
+.hbl{width:20px;height:1.5px;background:var(--ink);border-radius:2px;transition:.3s}
+#hbg.on .hbl:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+#hbg.on .hbl:nth-child(2){opacity:0}
+#hbg.on .hbl:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* mobile nav drawer */
+#mdraw{position:fixed;top:0;right:0;bottom:0;z-index:850;width:min(290px,86vw);background:var(--ink);transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);padding:76px 28px 32px;display:flex;flex-direction:column}
+#mdraw.on{transform:translateX(0)}
+#movl{position:fixed;inset:0;z-index:840;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:opacity .3s}
+#movl.on{opacity:1;pointer-events:all}
+.mdl{display:block;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(244,241,234,.65);font-size:15px;letter-spacing:.05em;text-decoration:none;transition:color .2s}
+.mdl:hover{color:#fff}
+
+/* ─────────────────────────────────────────
+   CART SIDEBAR
+───────────────────────────────────────── */
+#csid{position:fixed;top:0;right:0;bottom:0;z-index:920;width:min(360px,95vw);background:var(--cream);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:68px 26px 26px;overflow-y:auto}
+#csid.on{transform:translateX(0)}
+#covl{position:fixed;inset:0;z-index:910;background:rgba(0,0,0,.38);opacity:0;pointer-events:none;transition:opacity .3s}
+#covl.on{opacity:1;pointer-events:all}
+.cst{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px}
+#citems{flex:1;display:flex;flex-direction:column;gap:10px}
+.ci-empty{font-family:'DM Sans',sans-serif;font-size:13px;opacity:.38;margin-top:8px}
+.ci{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.ci-ico{width:44px;height:44px;border-radius:3px;background:var(--sour-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px}
+.ci-nm{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700}
+.ci-pr{font-family:'DM Serif Display',serif;font-size:14px;color:var(--sweet)}
+.ci-rm{margin-left:auto;border:none;background:transparent;opacity:.28;cursor:pointer;font-size:15px;transition:opacity .2s}
+.ci-rm:hover{opacity:.8}
+.ctot{padding:14px 0 0;border-top:1px solid var(--line);margin-top:4px;display:flex;flex-direction:column;gap:12px}
+.ctot-row{display:flex;justify-content:space-between;align-items:center}
+.ctot-lbl{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.4}
+.ctot-pr{font-family:'DM Serif Display',serif;font-size:24px;color:var(--sweet)}
+.checkout-btn{padding:13px;border-radius:999px;border:none;background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+.checkout-btn:hover{opacity:.75}
+
+/* toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--bitter);color:var(--cream);border-radius:999px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;opacity:0;pointer-events:none;transition:all .38s ease;z-index:999;white-space:nowrap}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─────────────────────────────────────────
+   HERO  — 完全複刻PPT版面
+───────────────────────────────────────── */
+#hero{
+  height:100svh;width:100%;
+  background:var(--paper);
+  display:grid;grid-template-columns:280px 1fr 260px;
+  position:relative;overflow:hidden;
+}
+
+/* ── 左欄：PPT左側（文字＋三色點） ── */
+.hl{
+  padding:100px 0 60px 6vw;
+  display:flex;flex-direction:column;
+  position:relative;z-index:2;
+}
+.h-eyebrow{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.25em;opacity:.45;margin-bottom:6px}
+.h-rule{width:180px;height:1px;background:rgba(26,26,24,.15);margin-bottom:36px}
+.h-flavor-list{display:flex;flex-direction:column;gap:22px;margin-bottom:auto}
+.hfl{display:flex;align-items:center;gap:12px;cursor:pointer;transition:opacity .2s}
+.hfl:hover{opacity:.75}
+.hfl-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
+.hfl-zh{font-family:'Noto Serif TC',serif;font-weight:700;font-size:18px;letter-spacing:.1em}
+.hfl-sub{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.4;margin-top:2px}
+/* 左下：大圓 + 吉祥物 CINNAMON */
+.hl-deco{position:absolute;bottom:-60px;left:-40px;z-index:0}
+.hl-circle{width:220px;height:220px;border-radius:50%;background:var(--sour-bg);opacity:.55}
+.hl-mascot-l{position:absolute;bottom:60px;left:30px;z-index:1}
+.hl-mascot-l svg{width:90px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.08))}
+.hl-mascot-l:hover{transform:translateY(-8px)}
+.hl-mascot-l{transition:transform .4s}
+
+/* ── 中欄：PPT中央標準字卡片 ── */
+.hm{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:80px 24px 60px;z-index:2;position:relative;
+}
+/* 標準字卡片（白底圓角，像PPT中央那張卡） */
+.wordmark-card{
+  width:100%;max-width:380px;
+  background:var(--paper);
+  border-radius:28px;
+  box-shadow:0 8px 48px rgba(0,0,0,.08), 0 2px 12px rgba(0,0,0,.05);
+  padding:36px 28px 40px;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  position:relative;overflow:hidden;
+}
+/* 卡片內的裝飾細線（PPT標準字兩側細線） */
+.wc-line{width:1px;height:100%;position:absolute;top:0;background:var(--line)}
+.wc-line.l{left:28%} .wc-line.r{right:28%}
+.wc-img{width:100%;max-height:320px;object-fit:contain}
+.wc-img[src=""]{display:none}
+.wc-ph{
+  width:100%;min-height:280px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;
+  color:rgba(26,26,24,.25);font-family:'DM Sans',sans-serif;font-size:12px;
+  text-align:center;line-height:1.7;
+  border:1.5px dashed rgba(26,26,24,.14);border-radius:8px;padding:20px;
+}
+/* 若圖片有src則隱藏預留框 */
+.wc-img:not([src=""]) + .wc-ph{ display:none; }
+.wc-tagline{margin-top:20px;font-size:12px;letter-spacing:.18em;opacity:.38;text-align:center;font-family:'DM Sans',sans-serif}
+/* 卡片下方三色CTA */
+.wc-cta{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .25s;border:none}
+.btn-ink{background:var(--ink);color:var(--cream)}
+.btn-ink:hover{opacity:.75}
+.btn-gh{border:1px solid rgba(26,26,24,.22);color:var(--ink);background:transparent}
+.btn-gh:hover{background:rgba(26,26,24,.05);border-color:var(--ink)}
+
+/* ── 右欄：PPT右側幾何裝飾 ── */
+.hr{position:relative;z-index:1;overflow:hidden}
+/* 右上角三角色塊 (暖棕) */
+.hr-tri{position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 260px 200px 0;border-color:transparent var(--sweet-bg) transparent transparent;opacity:.75}
+/* 右側灰綠矩形 */
+.hr-rect{position:absolute;bottom:12%;right:0;width:80px;height:30vh;background:var(--bitter-bg);opacity:.7}
+/* MEDIUM 吉祥物（右上） */
+.hr-mascot-t{position:absolute;top:220px;right:50px;z-index:3;cursor:pointer;transition:transform .4s}
+.hr-mascot-t:hover{transform:translateY(-10px)}
+.hr-mascot-t svg{width:75px;height:auto;filter:drop-shadow(0 4px 14px rgba(0,0,0,.1))}
+/* FRENCH 吉祥物（右下） */
+.hr-mascot-b{position:absolute;bottom:120px;right:60px;z-index:3;cursor:pointer;transition:transform .4s}
+.hr-mascot-b:hover{transform:translateY(-10px)}
+.hr-mascot-b svg{width:75px;height:auto;filter:drop-shadow(0 4px 14px rgba(0,0,0,.1))}
+/* 吉祥物名稱標 */
+.mascot-tag{text-align:center;margin-top:6px}
+.mascot-tag .mn{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.22em;text-transform:uppercase;opacity:.45}
+/* PPT右下：作者資訊（仿PPT右下角） */
+
+/* scroll hint */
+.s-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:5;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:rgba(26,26,24,.25);display:flex;flex-direction:column;align-items:center;gap:5px;animation:bob 2.5s ease-in-out infinite}
+.s-hint::after{content:'';width:1px;height:26px;background:linear-gradient(to bottom,rgba(26,26,24,.2),transparent)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ─────────────────────────────────────────
+   SECTION SHARED  (PPT章節排版風格)
+───────────────────────────────────────── */
+.sec{padding:96px 8vw 80px;border-top:1px solid var(--line)}
+.sec-ey{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.42em;text-transform:uppercase;opacity:.32;margin-bottom:8px}
+.sec-bar{height:1.5px;width:200px;margin-bottom:20px}
+.sec-h{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,46px);font-weight:400;line-height:1.1;margin-bottom:32px}
+.sec-p{font-family:'DM Sans',sans-serif;font-size:clamp(13px,1.3vw,15px);line-height:2.1;opacity:.6;letter-spacing:.03em;max-width:580px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+/* PPT 風格區塊標題列 */
+.sec-label-row{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.slr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.slr-zh{font-family:'Noto Serif TC',serif;font-weight:700;font-size:16px;letter-spacing:.08em}
+.slr-en{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.3em;text-transform:uppercase;opacity:.35}
+
+/* img placeholder */
+.iph{background:rgba(26,26,24,.04);border:1.5px dashed rgba(26,26,24,.13);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:rgba(26,26,24,.28);text-align:center;padding:20px;font-family:'DM Sans',sans-serif;font-size:11px;line-height:1.7}
+.iph.r169{aspect-ratio:16/9}
+.iph.r34{aspect-ratio:3/4}
+.iph.r11{aspect-ratio:1}
+
+/* ─────────────────────────────────────────
+   STORY SECTION  (品牌故事)
+───────────────────────────────────────── */
+#story{background:var(--paper)}
+/* PPT 風格引言 */
+.story-quote{font-family:'Noto Serif TC',serif;font-weight:700;font-size:clamp(17px,2.2vw,24px);line-height:1.75;letter-spacing:.06em;border-left:3px solid var(--sour);padding-left:18px;margin:22px 0;color:var(--sour)}
+/* 三色情緒小卡（PPT橫列配色列） */
+.flavor-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:28px}
+.fc{padding:20px 18px;display:flex;flex-direction:column;gap:8px}
+.fc-sour  {background:var(--sour-bg)} .fc-sweet {background:var(--sweet-bg)} .fc-bitter{background:var(--bitter-bg)}
+.fc-zh{font-family:'Noto Serif TC',serif;font-weight:700;font-size:16px;letter-spacing:.08em}
+.fc-en{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;text-transform:uppercase;opacity:.4}
+.fc-desc{font-family:'DM Sans',sans-serif;font-size:12px;opacity:.55;line-height:1.7}
+
+/* ─────────────────────────────────────────
+   ROAST TABS
+───────────────────────────────────────── */
+#roasts{background:var(--cream)}
+.rtabs{display:flex;border-bottom:1px solid var(--line)}
+.rtab{flex:1;padding:15px 10px;text-align:center;cursor:pointer;border:none;background:transparent;color:var(--ink);opacity:.32;font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;letter-spacing:.08em;transition:opacity .25s;border-bottom:2px solid transparent;position:relative;top:1px}
+.rtab.on{opacity:1}
+.rtab.ts.on{border-bottom-color:var(--sour)}
+.rtab.tw.on{border-bottom-color:var(--sweet)}
+.rtab.tb.on{border-bottom-color:var(--bitter)}
+.rtab-sub{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.26em;text-transform:uppercase;opacity:.38;display:block;margin-top:3px}
+.rpanel{display:none;padding:44px 0 0}
+.rpanel.on{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.rp-quote{font-family:'Noto Serif TC',serif;font-weight:700;font-size:clamp(15px,2vw,20px);line-height:1.75;letter-spacing:.06em;border-left:3px solid;padding-left:16px;margin:16px 0 20px}
+.rp-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.rp-tag{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.13em;padding:5px 14px;border-radius:999px;border:1.5px solid;font-weight:700}
+.rp-spec{font-family:'DM Sans',sans-serif;font-size:13px;line-height:2;opacity:.55;margin-top:14px}
+
+/* ─────────────────────────────────────────
+   SHOP (周邊商品)
+───────────────────────────────────────── */
+#shop{background:var(--paper)}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pcard{background:var(--cream);border-radius:4px;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s}
+.pcard:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.1)}
+.pcard-img{position:relative}
+.pcard-img .iph{aspect-ratio:1;border:none;border-radius:0}
+.pbadge{position:absolute;top:10px;left:10px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:999px;font-weight:500;color:#fff}
+.bs{background:var(--sour)} .bw{background:var(--sweet)} .bb{background:var(--bitter)}
+.pcard-body{padding:18px 16px 20px}
+.pn{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;letter-spacing:.04em;margin-bottom:3px}
+.ps{font-family:'DM Sans',sans-serif;font-size:10px;opacity:.4;letter-spacing:.08em;margin-bottom:10px}
+.pp{font-family:'DM Serif Display',serif;font-size:20px;color:var(--sweet)}
+
+/* ── 商品數量選擇器 ── */
+.pcard-qty{
+  display:flex;align-items:center;gap:0;margin-top:10px;
+  border:1.5px solid rgba(26,26,24,.18);border-radius:999px;overflow:hidden;width:fit-content;
+}
+.pcard-qty button{
+  width:32px;height:32px;border:none;background:transparent;
+  font-size:17px;cursor:pointer;color:var(--ink);
+  transition:background .2s;line-height:1;flex-shrink:0;
+}
+.pcard-qty button:hover{background:rgba(26,26,24,.07)}
+.pcard-qty-n{
+  min-width:32px;text-align:center;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+}
+.pcard-add-row{display:flex;align-items:center;gap:10px;margin-top:12px}
+.pcard-add-row .padd{margin-top:0;flex:1}
+/* 禮盒數量 */
+.giftbox-qty{
+  display:flex;align-items:center;gap:0;margin-bottom:16px;
+  border:1.5px solid rgba(26,26,24,.18);border-radius:999px;overflow:hidden;width:fit-content;
+}
+.giftbox-qty button{
+  width:36px;height:36px;border:none;background:transparent;
+  font-size:18px;cursor:pointer;color:var(--ink);transition:background .2s;
+}
+.giftbox-qty button:hover{background:rgba(26,26,24,.07)}
+.giftbox-qty-n{
+  min-width:40px;text-align:center;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;
+}
+
+.padd{margin-top:12px;width:100%;padding:9px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.padd:hover{background:var(--ink);color:var(--cream)}
+
+/* ─────────────────────────────────────────
+   ORDERS
+───────────────────────────────────────── */
+#orders{background:var(--cream)}
+.oform{max-width:500px;display:flex;flex-direction:column;gap:14px}
+.or{display:flex;flex-direction:column;gap:5px}
+.ol{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.45}
+.oi{padding:11px 15px;border:1px solid rgba(26,26,24,.16);border-radius:4px;background:var(--paper);font-family:'Noto Serif TC',serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s}
+.oi:focus{border-color:var(--sour)}
+.osel{appearance:none;-webkit-appearance:none;cursor:pointer}
+
+/* 品牌故事三圖橫排 */
+.story-imgs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.story-img-wrap { position: relative; }
+.story-img-wrap img {
+  width: 100%; aspect-ratio: 16/9;
+  object-fit: cover; border-radius: 4px; display: block;
+}
+.story-img-wrap img[src=""] { display: none; }
+.story-img-wrap .iph { border-radius: 4px; }
+@media(max-width:960px){
+  .story-imgs { grid-template-columns: 1fr; }
+}
+@media(max-width:560px){
+  .story-imgs { gap: 10px; }
+}
+/* 商品第一排：3欄小件 */
+.shop-row-2col{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:560px){.shop-row-2col{grid-template-columns:1fr}}
+.shop-row1{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:22px}
+/* 商品第二排：禮盒大圖＋右側購物資訊 */
+.shop-row2{display:grid;grid-template-columns:1fr 340px;gap:0;background:var(--cream);border-radius:4px;overflow:hidden}
+.giftbox-img-wrap{position:relative;min-height:280px;overflow:hidden}
+.giftbox-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.giftbox-img-wrap img[src=""]{display:none}
+.giftbox-img-wrap .iph{height:100%;border-radius:0;border:none;background:rgba(26,26,24,.04)}
+.giftbox-info{padding:36px 28px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--line)}
+.giftbox-contents{background:rgba(26,26,24,.03);border-radius:4px;padding:16px;margin-bottom:4px}
+.gc-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(26,26,24,.06);font-family:'DM Sans',sans-serif;font-size:13px}
+.gc-item:last-child{border-bottom:none}
+.gc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.gc-price{margin-left:auto;font-family:'DM Serif Display',serif;font-size:14px;color:var(--sweet)}
+.gc-divider{height:1px;background:rgba(26,26,24,.1);margin:4px 0}
+@media(max-width:960px){
+  .shop-row2{grid-template-columns:1fr;grid-template-rows:280px auto}
+  .giftbox-info{border-left:none;border-top:1px solid var(--line)}
+}
+
+/* 吊飾已選狀態標示 */
+.charm-status{
+  display:none; font-family:'DM Sans',sans-serif;
+  font-size:11px; letter-spacing:.08em;
+  background:rgba(160,88,30,.1); color:var(--sweet);
+  border-radius:999px; padding:3px 10px; margin-right:8px;
+  white-space:nowrap; flex-shrink:0;
+}
+.charm-status.show{display:block}
+
+.charm-select{
+  display:none; padding:12px 16px 14px 44px;
+  background:rgba(160,88,30,.05);
+  border-bottom:1px solid rgba(26,26,24,.07);
+}
+.charm-select.show{display:block}
+.charm-label{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.25em;text-transform:uppercase;opacity:.4;margin-bottom:10px}
+.charm-opts{display:flex;gap:10px;flex-wrap:wrap}
+.charm-opt{
+  display:flex;align-items:center;gap:7px;cursor:pointer;
+  padding:7px 14px;border-radius:999px;border:1.5px solid rgba(26,26,24,.14);
+  font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;
+  transition:border-color .2s,background .2s;
+}
+.charm-opt:has(input:checked){border-color:var(--sweet);background:rgba(160,88,30,.06)}
+.charm-opt input{display:none}
+.charm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* 訂單空狀態提示 */
+.oi-empty-hint{
+  display:flex;align-items:center;gap:10px;padding:20px 16px;
+  font-family:'DM Sans',sans-serif;font-size:13px;opacity:.45;
+  border-bottom:1px solid rgba(26,26,24,.07);
+}
+.oi-empty-hint.hide{display:none}
+/* 訂單商品列（從購物車帶入） */
+.oi-cart-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;border-bottom:1px solid rgba(26,26,24,.07);
+}
+.oi-cart-ico{font-size:18px;flex-shrink:0}
+.oi-cart-info{flex:1}
+.oi-cart-nm{font-size:13px;font-weight:700;letter-spacing:.04em}
+.oi-cart-sub{font-family:'DM Sans',sans-serif;font-size:10px;opacity:.4;letter-spacing:.08em;margin-top:2px}
+.oi-cart-pr{font-family:'DM Serif Display',serif;font-size:15px;color:var(--sweet);flex-shrink:0;min-width:64px;text-align:right}
+/* 訂單頁數量調整 */
+.oi-qty-ctrl{
+  display:flex;align-items:center;gap:0;flex-shrink:0;
+  border:1px solid rgba(26,26,24,.16);border-radius:999px;overflow:hidden;
+}
+.oi-qty-ctrl button{
+  width:26px;height:26px;border:none;background:transparent;
+  font-size:15px;cursor:pointer;color:var(--ink);transition:background .2s;line-height:1;
+}
+.oi-qty-ctrl button:hover{background:rgba(26,26,24,.07)}
+.oi-qty-ctrl span{min-width:26px;text-align:center;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500}
+.oi-cart-rm{
+  border:none;background:transparent;opacity:.25;cursor:pointer;
+  font-size:13px;flex-shrink:0;transition:opacity .2s;padding:2px 4px;
+}
+.oi-cart-rm:hover{opacity:.7}
+
+.order-items{
+  border:1px solid rgba(26,26,24,.14);border-radius:4px;
+  overflow:hidden;background:var(--paper);
+}
+.oi-row{
+  display:flex;align-items:center;gap:0;
+  padding:12px 16px;border-bottom:1px solid rgba(26,26,24,.07);
+  transition:background .2s;
+}
+.oi-row:last-of-type{border-bottom:none}
+.oi-row:has(.oi-chk:checked){background:rgba(181,168,74,.06)}
+.oi-chk{
+  width:16px;height:16px;flex-shrink:0;cursor:pointer;
+  accent-color:var(--sour);margin-right:12px;
+}
+.oi-lbl{
+  display:flex;align-items:center;gap:10px;flex:1;cursor:pointer;
+}
+.oi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.oi-nm{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;letter-spacing:.04em}
+.oi-pr{margin-left:auto;font-family:'DM Serif Display',serif;font-size:14px;color:var(--sweet);padding-right:12px}
+.oi-qty{
+  display:none;align-items:center;gap:0;
+  border:1px solid rgba(26,26,24,.15);border-radius:999px;overflow:hidden;flex-shrink:0;
+}
+.oi-qty.show{display:flex}
+.oi-qty button{
+  width:28px;height:28px;border:none;background:transparent;
+  font-size:16px;cursor:pointer;color:var(--ink);
+  transition:background .2s;line-height:1;
+}
+.oi-qty button:hover{background:rgba(26,26,24,.07)}
+.oi-n{
+  min-width:28px;text-align:center;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+}
+.oi-subtotal{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 16px;background:rgba(26,26,24,.03);
+  border-top:1px solid rgba(26,26,24,.1);
+}
+.oi-total{
+  font-family:'DM Serif Display',serif;font-size:20px;color:var(--sweet);
+}
+.osub{margin-top:6px;padding:13px 28px;border-radius:999px;border:none;background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;align-self:flex-start}
+.osub:hover{opacity:.75}
+.note-box{background:var(--paper);padding:24px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;line-height:2.1;opacity:.6}
+.note-box strong{display:block;font-family:'DM Serif Display',serif;font-size:17px;opacity:1;color:var(--ink);margin-bottom:14px;font-weight:400}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end}
+.ftbrand{font-family:'DM Serif Display',serif;font-size:clamp(36px,6vw,60px);line-height:.9;opacity:.82}
+.ftzh{font-family:'Noto Serif TC',serif;font-weight:300;font-size:11px;letter-spacing:.45em;opacity:.2;margin-top:10px}
+.ft3{display:flex;gap:20px;margin-top:32px;flex-wrap:wrap}
+.ft3i-en{font-family:'DM Serif Display',serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.28;margin-bottom:2px}
+.ft3i-zh{font-family:'Noto Serif TC',serif;font-weight:700;font-size:14px;letter-spacing:.08em;margin-bottom:3px}
+.ft3i-d{font-family:'DM Sans',sans-serif;font-size:11px;opacity:.27;line-height:1.7}
+.ftinfo{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.06em;opacity:.28;line-height:2.2}
+.ftinfo strong{display:block;font-weight:400;font-size:14px;color:var(--cream);opacity:1;margin-bottom:4px}
+
+/* ─────────────────────────────────────────
+   REVEAL
+───────────────────────────────────────── */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media(max-width:960px){
+  .nav-links{display:none} #hbg{display:flex}
+  .shop-row1{grid-template-columns:1fr 1fr}
+  .shop-row2{grid-template-columns:1fr}
+  .pcard-img-wide{height:180px}
+  #hero{grid-template-columns:1fr;grid-template-rows:auto auto;height:auto;min-height:100svh}
+  .hl{padding:76px 6vw 24px;flex-direction:row;flex-wrap:wrap;gap:24px;align-items:center}
+  .hl-deco{display:none}
+  .hm{padding:20px 6vw 40px}
+  .wordmark-card{max-width:100%}
+  .hr{display:none}
+  .g2,.rpanel.on{grid-template-columns:1fr;gap:24px}
+  .g3,.pgrid,.flavor-cards{grid-template-columns:1fr 1fr}
+  footer{grid-template-columns:1fr;gap:24px}
+}
+@media(max-width:560px){
+  .sec{padding:72px 5vw 52px}
+  .shop-row1{grid-template-columns:1fr}
+  .g3,.pgrid,.flavor-cards{grid-template-columns:1fr}
+  .ft3{flex-direction:column;gap:12px}
+  #csid{width:100%}
+  .rtab{padding:13px 6px;font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#hero">三分時緒</a>
+  <ul class="nav-links">
+    <li><a href="#story" class="on">品牌故事</a></li>
+    <li><a href="#roasts">淺中深焙</a></li>
+    <li><a href="#shop">周邊商品</a></li>
+    <li><a href="#orders">我的訂單</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-cart-btn" onclick="toggleCart()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      購物車<span class="cbadge" id="cbdg">0</span>
+    </button>
+    <button id="hbg" onclick="toggleNav()"><span class="hbl"></span><span class="hbl"></span><span class="hbl"></span></button>
+  </div>
+</nav>
+<div id="movl" onclick="toggleNav()"></div>
+<div id="mdraw">
+  <a class="mdl" href="#story"  onclick="toggleNav()">品牌故事</a>
+  <a class="mdl" href="#roasts" onclick="toggleNav()">淺中深焙介紹</a>
+  <a class="mdl" href="#shop"   onclick="toggleNav()">周邊商品</a>
+  <a class="mdl" href="#orders" onclick="toggleNav()">我的訂單</a>
+</div>
+
+<!-- CART SIDEBAR -->
+<div id="covl" onclick="toggleCart()"></div>
+<aside id="csid">
+  <p class="cst">購物車</p>
+  <div id="citems"><p class="ci-empty">購物車是空的</p></div>
+  <div class="ctot">
+    <div class="ctot-row">
+      <span class="ctot-lbl">合計</span>
+      <span class="ctot-pr" id="ctotal">NT$0</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">前往結帳 →</button>
+  </div>
+</aside>
+<div id="toast">✓ 訂單已送出！謝謝你的支持</div>
+
+<!-- ══════════════════════════
+     HERO — PPT 排版
+══════════════════════════ -->
+<section id="hero">
+
+  <!-- 左欄：眉標 + 橫線 + 三色點 + 左下圓 + CINNAMON -->
+  <div class="hl">
+    <div style="position:relative;z-index:2">
+      <p class="h-eyebrow rv">在咖啡裡 看見情緒的形狀</p>
+      <div class="h-rule rv d1"></div>
+      <div class="h-flavor-list rv d2">
+        <div class="hfl" onclick="goRoast('s')">
+          <div class="hfl-dot" style="background:var(--sour)"></div>
+          <div><div class="hfl-zh" style="color:var(--sour)">淺焙</div><div class="hfl-sub">Cinnamon Roast</div></div>
+        </div>
+        <div class="hfl" onclick="goRoast('w')">
+          <div class="hfl-dot" style="background:var(--sweet)"></div>
+          <div><div class="hfl-zh" style="color:var(--sweet)">中焙</div><div class="hfl-sub">Medium Roast</div></div>
+        </div>
+        <div class="hfl" onclick="goRoast('b')">
+          <div class="hfl-dot" style="background:var(--bitter)"></div>
+          <div><div class="hfl-zh" style="color:var(--bitter)">深焙</div><div class="hfl-sub">French Roast</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- 左下裝飾圓 + CINNAMON -->
+    <div class="hl-deco">
+      <div class="hl-circle"></div>
+      <!-- ★ CINNAMON 吉祥物圖檔放置區
+           將 src="" 改成你的圖檔路徑
+           例：src="cinnamon.png"
+           建議：PNG 透明背景 -->
+      <div class="hl-mascot-l" onclick="goRoast('s')">
+        <img src="cinnamon.png" alt="CINNAMON"
+             style="width:90px;height:auto;display:block;">
+        <div class="mascot-tag"><div class="mn" style="color:var(--sour)">CINNAMON</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 中欄：標準字卡片 -->
+  <div class="hm">
+    <div class="wordmark-card rv d1">
+      <div class="wc-line l"></div>
+      <div class="wc-line r"></div>
+      <!--
+        ★ 標準字圖檔放置區
+        將 src="" 改成你的檔案路徑，例如：
+        src="logo.png"
+        建議：PNG 透明背景，寬度 600px 以上
+      -->
+      <img src="logo.png" alt="三分時緒標準字" id="wc-img" class="wc-img">
+      <div class="wc-ph" id="wc-ph">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="opacity:.22"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        【標準字圖檔】<br>
+        <small>src="logo.png"<br>PNG 透明背景</small>
+      </div>
+      <p class="wc-tagline">三分時緒 / TASTE AS LANGUAGE</p>
+      <div class="wc-cta">
+        <a class="btn btn-ink" href="#shop">立即選購 →</a>
+        <a class="btn btn-gh" href="#story">品牌故事</a>
+      </div>
+    </div>
+    <div class="s-hint">Scroll</div>
+  </div>
+
+  <!-- 右欄：幾何裝飾 + MEDIUM + FRENCH + 作者 -->
+  <div class="hr">
+    <div class="hr-tri"></div>
+    <div class="hr-rect"></div>
+    <!-- ★ MEDIUM 吉祥物圖檔放置區
+         src="medium.png" -->
+    <div class="hr-mascot-t" onclick="goRoast(\'w\')">
+      <img src="medium.png" alt="MEDIUM" style="width:80px;height:auto;display:block;filter:drop-shadow(0 4px 14px rgba(0,0,0,.1));">
+      <div style="display:none;width:80px;height:100px;border:1.5px dashed rgba(160,88,30,.4);border-radius:8px;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:rgba(160,88,30,.06)">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.15em;color:rgba(160,88,30,.7);text-align:center;line-height:1.6;">MEDIUM<br>圖檔放這裡</span>
+      </div>
+      <div class="mascot-tag"><div class="mn" style="color:var(--sweet)">MEDIUM</div></div>
+    </div>
+    <!-- ★ FRENCH 吉祥物圖檔放置區
+         src="french.png" -->
+    <div class="hr-mascot-b" onclick="goRoast(\'b\')">
+      <img src="french.png" alt="FRENCH" style="width:78px;height:auto;display:block;filter:drop-shadow(0 4px 14px rgba(0,0,0,.1));">
+      <div style="display:none;width:78px;height:96px;border:1.5px dashed rgba(74,94,77,.4);border-radius:8px;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:rgba(74,94,77,.06)">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.15em;color:rgba(74,94,77,.7);text-align:center;line-height:1.6;">FRENCH<br>圖檔放這裡</span>
+      </div>
+      <div class="mascot-tag"><div class="mn" style="color:var(--bitter)">FRENCH</div></div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ══ 品牌故事 ══ -->
+<section class="sec" id="story" style="background:var(--paper)">
+  <p class="sec-ey rv">Brand Story · 品牌故事</p>
+  <div class="sec-bar rv" style="background:var(--sour)"></div>
+  <h2 class="sec-h rv">每天早上，你喝的那杯咖啡<br>是為了提神，還是撐住自己？</h2>
+
+  <!-- 文字區塊（全寬） -->
+  <div class="story-text rv" style="max-width:680px;margin-bottom:40px;">
+    <div class="story-quote">在咖啡裡，看見情緒的形狀。</div>
+    <p class="sec-p">很多人不是不累，而是習慣把情緒吞下去。三分時緒想做一件事——讓情緒，可以被看見。<br><br>透過淺焙、中焙、深焙三種烘焙程度作為媒介，將壓力、療癒、堅韌三種情緒狀態，轉化為可被感受的視覺語言，讓每一杯咖啡都成為一次情緒的對話。</p>
+  </div>
+
+  <!-- 三色小卡（全寬） -->
+  <div class="flavor-cards rv d1" style="margin-bottom:40px;">
+    <div class="fc fc-sour">
+      <div class="fc-zh" style="color:var(--sour)">淺焙</div>
+      <div class="fc-en">Cinnamon Roast</div>
+      <div class="fc-desc">早晨・壓力・辛酸</div>
+    </div>
+    <div class="fc fc-sweet">
+      <div class="fc-zh" style="color:var(--sweet)">中焙</div>
+      <div class="fc-en">Medium Roast</div>
+      <div class="fc-desc">午後・休息・療癒</div>
+    </div>
+    <div class="fc fc-bitter">
+      <div class="fc-zh" style="color:var(--bitter)">深焙</div>
+      <div class="fc-en">French Roast</div>
+      <div class="fc-desc">夜晚・堅持・苦韻</div>
+    </div>
+  </div>
+
+  <!-- 三張圖橫排（16:9） -->
+  <div class="story-imgs rv d2">
+    <div class="story-img-wrap">
+      <img src="story1.png" alt="品牌圖片一">
+    </div>
+    <div class="story-img-wrap">
+      <img src="story2.png" alt="品牌圖片二">
+    </div>
+    <div class="story-img-wrap">
+      <img src="story3.png" alt="品牌圖片三">
+    </div>
+  </div>
+</section>
+
+<!-- ══ 淺中深焙介紹 ══ -->
+<section class="sec" id="roasts" style="background:var(--cream)">
+  <p class="sec-ey rv">Three Roasts · 三款烘焙</p>
+  <div class="sec-bar rv" style="background:var(--sweet)"></div>
+  <h2 class="sec-h rv">選一種，感受你的情緒</h2>
+  <div class="rtabs rv d1">
+    <button class="rtab ts on" onclick="switchRoast('s')">淺焙<span class="rtab-sub">Cinnamon · Sour</span></button>
+    <button class="rtab tw"    onclick="switchRoast('w')">中焙<span class="rtab-sub">Medium · Sweet</span></button>
+    <button class="rtab tb"    onclick="switchRoast('b')">深焙<span class="rtab-sub">French · Bitter</span></button>
+  </div>
+  <!-- 淺焙 -->
+  <div class="rpanel on" id="rps">
+    <div>
+      <div class="sec-label-row">
+        <div class="slr-dot" style="background:var(--sour)"></div>
+        <div><div class="slr-zh" style="color:var(--sour)">酸澀</div><div class="slr-en">Sour · 01 · 淺焙</div></div>
+      </div>
+      <h3 style="font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);color:var(--sour);line-height:1;margin-bottom:0">淺焙</h3>
+      <p class="rp-quote" style="border-color:var(--sour);color:var(--sour)">酸，是生活帶來的壓力與委屈，不是崩潰，是每天都在發生的小小刺痛。</p>
+      <p class="sec-p">早晨的鬧鐘，城市的腳步，咖啡是撐起一天的力量，也是上班族的辛酸。酸，是生活帶來的壓力與委屈，不是崩潰，是每天都在發生的小小刺痛。</p>
+      <div class="rp-tags">
+        <span class="rp-tag" style="color:var(--sour);border-color:var(--sour)">擁擠</span>
+        <span class="rp-tag" style="color:var(--sour);border-color:var(--sour)">壓縮</span>
+        <span class="rp-tag" style="color:var(--sour);border-color:var(--sour)">失衡</span>
+        <span class="rp-tag" style="color:var(--sour);border-color:var(--sour)">清晨感</span>
+      </div>
+      <p class="rp-spec">烘焙程度：淺・口感清爽<br>情緒對應：早晨・辛酸・壓力<br>吉祥物：CINNAMON（圓形無角）</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <img src="cinnamon-q.png" alt="CINNAMON" style="max-width:280px;width:100%;height:auto;border-radius:4px;">
+    </div>
+  </div>
+  <!-- 中焙 -->
+  <div class="rpanel" id="rpw">
+    <div>
+      <div class="sec-label-row">
+        <div class="slr-dot" style="background:var(--sweet)"></div>
+        <div><div class="slr-zh" style="color:var(--sweet)">回甘</div><div class="slr-en">Sweet · 02 · 中焙</div></div>
+      </div>
+      <h3 style="font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);color:var(--sweet);line-height:1;margin-bottom:0">中焙</h3>
+      <p class="rp-quote" style="border-color:var(--sweet);color:var(--sweet)">甜，是午後的短暫休息時光，暖暖的，像一道光悄悄的照亮妳內心壓力的救贖。</p>
+      <p class="sec-p">炎熱的陽光落下，世界終於慢了一點。甜，是午後的短暫休息時光，暖暖的，像一道光悄悄照亮內心壓力的救贖。</p>
+      <div class="rp-tags">
+        <span class="rp-tag" style="color:var(--sweet);border-color:var(--sweet)">光</span>
+        <span class="rp-tag" style="color:var(--sweet);border-color:var(--sweet)">留白</span>
+        <span class="rp-tag" style="color:var(--sweet);border-color:var(--sweet)">柔和</span>
+        <span class="rp-tag" style="color:var(--sweet);border-color:var(--sweet)">午後感</span>
+      </div>
+      <p class="rp-spec">烘焙程度：中・口感均衡<br>情緒對應：午後・短暫休息・療癒<br>吉祥物：MEDIUM（三角形）</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <img src="medium-q.png" alt="MEDIUM" style="max-width:280px;width:100%;height:auto;border-radius:4px;">
+    </div>
+  </div>
+  <!-- 深焙 -->
+  <div class="rpanel" id="rpb">
+    <div>
+      <div class="sec-label-row">
+        <div class="slr-dot" style="background:var(--bitter)"></div>
+        <div><div class="slr-zh" style="color:var(--bitter)">苦韻</div><div class="slr-en">Bitter · 03 · 深焙</div></div>
+      </div>
+      <h3 style="font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);color:var(--bitter);line-height:1;margin-bottom:0">深焙</h3>
+      <p class="rp-quote" style="border-color:var(--bitter);color:var(--bitter)">苦，是夜晚現實的自己，不是絕望，而是即使再累，還是選擇繼續撐下去。</p>
+      <p class="sec-p">回到家，是另一個戰場，再累也要撐著，因為生活不會停下，現實使我堅持。苦，不是絕望，而是即使再累，還是選擇繼續撐下去。</p>
+      <div class="rp-tags">
+        <span class="rp-tag" style="color:var(--bitter);border-color:var(--bitter)">空</span>
+        <span class="rp-tag" style="color:var(--bitter);border-color:var(--bitter)">重複</span>
+        <span class="rp-tag" style="color:var(--bitter);border-color:var(--bitter)">冷靜</span>
+        <span class="rp-tag" style="color:var(--bitter);border-color:var(--bitter)">深夜感</span>
+      </div>
+      <p class="rp-spec">烘焙程度：深・口感厚重<br>情緒對應：夜晚・現實・疲憊但持續<br>吉祥物：FRENCH（方形多角）</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <img src="french-q.png" alt="FRENCH" style="max-width:280px;width:100%;height:auto;border-radius:4px;">
+    </div>
+  </div>
+</section>
+
+<!-- ══ 周邊商品 ══ -->
+<section class="sec" id="shop" style="background:var(--paper)">
+  <p class="sec-ey rv">Merchandise · 周邊商品</p>
+  <div class="sec-bar rv" style="background:var(--bitter)"></div>
+  <h2 class="sec-h rv">選一款，帶走你的情緒</h2>
+
+  <!-- 第一排：禮盒大圖＋購物資訊 -->
+  <div class="shop-row2 rv d1" style="margin-bottom:22px;">
+    <div class="giftbox-img-wrap">
+      <!-- ★ 禮盒大圖 src="packaging.png" -->
+      <img src="" alt="三分時緒禮盒組"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="iph" style="height:100%;border:none;border-radius:4px;min-height:280px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="opacity:.22"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <p>【禮盒大圖】<br><small>貼上你的圖片連結</small></p>
+      </div>
+    </div>
+    <div class="giftbox-info">
+      <span class="pbadge bw" style="position:static;display:inline-block;margin-bottom:16px;">禮盒</span>
+      <h3 class="pn" style="font-size:22px;margin-bottom:6px;">三分時緒禮盒組</h3>
+      <p class="ps" style="font-size:13px;margin-bottom:20px;">淺焙・中焙・深焙 · 三款咖啡包各一入</p>
+      <div class="giftbox-contents">
+        <p style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;opacity:.4;margin-bottom:10px;">內含商品</p>
+        <div class="gc-item"><span class="gc-dot" style="background:var(--sour)"></span><span>淺焙咖啡包</span><span class="gc-price">Cinnamon Roast</span></div>
+        <div class="gc-item"><span class="gc-dot" style="background:var(--sweet)"></span><span>中焙咖啡包</span><span class="gc-price">Medium Roast</span></div>
+        <div class="gc-item"><span class="gc-dot" style="background:var(--bitter)"></span><span>深焙咖啡包</span><span class="gc-price">French Roast</span></div>
+        <div class="gc-divider"></div>
+        <div class="gc-item"><span style="opacity:.45;font-size:11px;">三款各一入</span><span class="gc-price">NT$250</span></div>
+      </div>
+      <div class="pp" style="font-size:28px;margin:16px 0 16px;">NT$250</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div class="giftbox-qty">
+          <button type="button" onclick="pQty('qcgift',-1)">−</button>
+          <span id="qcgift" class="giftbox-qty-n">1</span>
+          <button type="button" onclick="pQty('qcgift',1)">+</button>
+        </div>
+        <span style="font-family:'DM Sans',sans-serif;font-size:11px;opacity:.4;letter-spacing:.08em;">件</span>
+      </div>
+      <button class="padd" style="width:100%;" onclick="pAddCart('qcgift','三分時緒禮盒組',250,'🎁','w')">加入購物車</button>
+    </div>
+  </div>
+
+  <!-- 第二排：吊飾三款（淺淺・中中・深深） -->
+  <div class="shop-row1 rv d2" style="margin-bottom:22px;">
+    <!-- 淺淺吊飾 -->
+    <div class="pcard" data-pprice="40" data-picon="🔮" data-ptype="s">
+      <div class="pcard-img">
+        <!-- 圖檔位置：src="cinnamon.png" -->
+        <div class="iph" style="aspect-ratio:1;border:none;border-radius:0"><p>【圖檔】吊飾・淺淺</p></div>
+        <span class="pbadge bs">吊飾</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pn">吊飾・淺淺</div>
+        <div class="ps">CINNAMON · 淺焙角色</div>
+        <div class="pp">NT$40</div>
+        <div class="pcard-add-row">
+          <div class="pcard-qty">
+            <button type="button" onclick="event.stopPropagation();pQty('qc1',-1)">−</button>
+            <span id="qc1" class="pcard-qty-n">1</span>
+            <button type="button" onclick="event.stopPropagation();pQty('qc1',1)">+</button>
+          </div>
+          <button class="padd" onclick="event.stopPropagation();pAddCart('qc1','吊飾・淺淺',40,'🔮','s')">加入購物車</button>
+        </div>
+      </div>
+    </div>
+    <!-- 中中吊飾 -->
+    <div class="pcard" data-pname="吊飾・中中" data-pprice="40" data-picon="🔮" data-ptype="w">
+      <div class="pcard-img">
+        <!-- 圖檔位置：src="medium.png" -->
+        <div class="iph" style="aspect-ratio:1;border:none;border-radius:0"><p>【圖檔】吊飾・中中</p></div>
+        <span class="pbadge bw">吊飾</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pn">吊飾・中中</div>
+        <div class="ps">MEDIUM · 中焙角色</div>
+        <div class="pp">NT$40</div>
+        <div class="pcard-add-row">
+          <div class="pcard-qty">
+            <button type="button" onclick="event.stopPropagation();pQty('qc2',-1)">−</button>
+            <span id="qc2" class="pcard-qty-n">1</span>
+            <button type="button" onclick="event.stopPropagation();pQty('qc2',1)">+</button>
+          </div>
+          <button class="padd" onclick="event.stopPropagation();pAddCart('qc2','吊飾・中中',40,'🔮','w')">加入購物車</button>
+        </div>
+      </div>
+    </div>
+    <!-- 深深吊飾 -->
+    <div class="pcard" data-pname="吊飾・深深" data-pprice="40" data-picon="🔮" data-ptype="b">
+      <div class="pcard-img">
+        <!-- 圖檔位置：src="french.png" -->
+        <div class="iph" style="aspect-ratio:1;border:none;border-radius:0"><p>【圖檔】吊飾・深深</p></div>
+        <span class="pbadge bb">吊飾</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pn">吊飾・深深</div>
+        <div class="ps">FRENCH · 深焙角色</div>
+        <div class="pp">NT$40</div>
+        <div class="pcard-add-row">
+          <div class="pcard-qty">
+            <button type="button" onclick="event.stopPropagation();pQty('qc3',-1)">−</button>
+            <span id="qc3" class="pcard-qty-n">1</span>
+            <button type="button" onclick="event.stopPropagation();pQty('qc3',1)">+</button>
+          </div>
+          <button class="padd" onclick="event.stopPropagation();pAddCart('qc3','吊飾・深深',40,'🔮','b')">加入購物車</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第三排：貼紙＋明信片（兩欄） -->
+  <div class="shop-row-2col rv d3">
+    <!-- 情緒貼紙組 -->
+    <div class="pcard" data-pname="情緒貼紙組" data-pprice="10" data-picon="🏷" data-ptype="s">
+      <div class="pcard-img">
+        <!-- 圖檔位置：src="sticker.png" -->
+        <div class="iph" style="aspect-ratio:16/9;border:none;border-radius:0"><p>【圖檔】情緒貼紙組</p></div>
+        <span class="pbadge bs">貼紙</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pn">情緒貼紙組</div>
+        <div class="ps">三款角色 · 各式圖樣</div>
+        <div class="pp">NT$10</div>
+        <div class="pcard-add-row">
+          <div class="pcard-qty">
+            <button type="button" onclick="event.stopPropagation();pQty('qc4',-1)">−</button>
+            <span id="qc4" class="pcard-qty-n">1</span>
+            <button type="button" onclick="event.stopPropagation();pQty('qc4',1)">+</button>
+          </div>
+          <button class="padd" onclick="event.stopPropagation();pAddCart('qc4','情緒貼紙組',10,'🏷','s')">加入購物車</button>
+        </div>
+      </div>
+    </div>
+    <!-- 情緒明信片 -->
+    <div class="pcard" data-pname="情緒明信片" data-pprice="30" data-picon="📮" data-ptype="b">
+      <div class="pcard-img">
+        <!-- 圖檔位置：src="postcard.png" -->
+        <div class="iph" style="aspect-ratio:16/9;border:none;border-radius:0"><p>【圖檔】情緒明信片</p></div>
+        <span class="pbadge bb">明信片</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pn">情緒明信片</div>
+        <div class="ps">酸甜苦 · 三款場景</div>
+        <div class="pp">NT$30</div>
+        <div class="pcard-add-row">
+          <div class="pcard-qty">
+            <button type="button" onclick="event.stopPropagation();pQty('qc5',-1)">−</button>
+            <span id="qc5" class="pcard-qty-n">1</span>
+            <button type="button" onclick="event.stopPropagation();pQty('qc5',1)">+</button>
+          </div>
+          <button class="padd" onclick="event.stopPropagation();pAddCart('qc5','情緒明信片',30,'📮','b')">加入購物車</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ══ 我的訂單 ══ -->
+<section class="sec" id="orders" style="background:var(--cream)">
+  <p class="sec-ey rv">My Order · 我的訂單</p>
+  <div class="sec-bar rv" style="background:var(--sour)"></div>
+  <h2 class="sec-h rv">填寫訂購資訊</h2>
+  <div class="g2" style="gap:52px;align-items:start">
+    <form class="oform rv d1" onsubmit="submitOrder(event)">
+      <div class="or"><label class="ol">姓名</label><input class="oi" type="text" placeholder="廖妍釩" required></div>
+      <div class="or"><label class="ol">電子信箱</label><input class="oi" type="email" placeholder="your@email.com" required></div>
+      <div class="or"><label class="ol">聯絡電話</label><input class="oi" type="tel" placeholder="09xx-xxx-xxx"></div>
+      <div class="or"><label class="ol">收件地址</label><input class="oi" type="text" placeholder="縣市 / 區 / 街道 / 門號"></div>
+      <div class="or">
+        <label class="ol">已選商品（來自購物車）</label>
+        <div class="order-items" id="order-items">
+          <!-- 由購物車內容動態產生 -->
+          <div class="oi-empty-hint" id="oi-empty">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.3"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.98-1.61L23 6H6"/></svg>
+            <span>購物車是空的，請先到<a href="#shop" style="color:var(--sweet);text-decoration:underline;text-underline-offset:3px;">周邊商品</a>加入商品</span>
+          </div>
+          <div class="oi-subtotal">
+            <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.45">訂單小計</span>
+            <span class="oi-total" id="order-total">NT$0</span>
+          </div>
+        </div>
+      </div>
+      <div class="or"><label class="ol">備註</label><input class="oi" type="text" placeholder="例：包裝請勿折疊"></div>
+      <button class="osub" type="submit">送出訂單 →</button>
+    </form>
+    <div class="rv d2" style="display:flex;flex-direction:column;gap:16px">
+      <div class="note-box">
+        <strong>注意事項</strong>
+        ・訂單送出後將以 Email 確認<br>
+        ・付款方式：銀行轉帳 / 超商代碼<br>
+        ・出貨時間：確認付款後 3–5 個工作天<br>
+        ・如需發票請於備註欄說明
+      </div>
+      <!-- 圖檔位置：包裝展示圖 -->
+      <img src="packaging.png" alt="包裝展示" style="width:100%;height:auto;border-radius:4px;">
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="ftbrand">三分<br>時緒</div>
+    <div class="ftzh">TASTE AS LANGUAGE</div>
+    <div class="ft3">
+      <div><div class="ft3i-en" style="color:var(--sour-bg)">Cinnamon Roast</div><div class="ft3i-zh" style="color:var(--sour-bg)">淺焙・辛酸</div><p class="ft3i-d">清晨的壓力，有些酸澀</p></div>
+      <div><div class="ft3i-en" style="color:var(--sweet-bg)">Medium Roast</div><div class="ft3i-zh" style="color:var(--sweet-bg)">中焙・回甘</div><p class="ft3i-d">午後的留白，慢慢回甘</p></div>
+      <div><div class="ft3i-en" style="color:var(--bitter-bg)">French Roast</div><div class="ft3i-zh" style="color:var(--bitter-bg)">深焙・苦韻</div><p class="ft3i-d">夜晚的堅持，是生活底色</p></div>
+    </div>
+  </div>
+  <div><p class="ftinfo"><strong>廖妍釩</strong>國立斗六家商<br>廣二辛</p></div>
+</footer>
+
+<script>
+// ── Nav drawer ──
+function toggleNav(){
+  ['hbg','mdraw','movl'].forEach(id=>document.getElementById(id).classList.toggle('on'));
+}
+
+
+// ── 商品數量選擇器 ──
+function pQty(id, delta){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const n = Math.max(1, parseInt(el.textContent) + delta);
+  el.textContent = n;
+}
+function pAddCart(id, name, price, icon, type){
+  const el = document.getElementById(id);
+  const qty = el ? parseInt(el.textContent) : 1;
+  for(let i=0;i<qty;i++) cart.push({name, price:parseInt(price), icon, id:Date.now()+i, type});
+  renderCart();
+  renderOrderItems();
+  document.getElementById('csid').classList.add('on');
+  document.getElementById('covl').classList.add('on');
+  // reset qty
+  if(el) el.textContent = '1';
+}
+
+// ── Cart ──
+let cart = [];
+
+function toggleCart(){
+  document.getElementById('csid').classList.toggle('on');
+  document.getElementById('covl').classList.toggle('on');
+}
+
+function addCart(name, price, icon, type){
+  cart.push({name, price:parseInt(price), icon, id:Date.now(), type});
+  renderCart();
+  renderOrderItems();
+  document.getElementById('csid').classList.add('on');
+  document.getElementById('covl').classList.add('on');
+}
+
+function removeCI(id){
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+  renderOrderItems();
+}
+
+function renderCart(){
+  const el    = document.getElementById('citems');
+  const badge = document.getElementById('cbdg');
+  const tot   = document.getElementById('ctotal');
+  badge.textContent = cart.length;
+  badge.classList.toggle('on', cart.length > 0);
+  if(!cart.length){
+    el.innerHTML = '<p class="ci-empty">購物車是空的</p>';
+    tot.textContent = 'NT$0';
+    return;
+  }
+  const sum = cart.reduce((a,i) => a + i.price, 0);
+  tot.textContent = 'NT$' + sum.toLocaleString();
+  el.innerHTML = cart.map(i => `
+    <div class="ci">
+      <div class="ci-ico">${i.icon}</div>
+      <div><div class="ci-nm">${i.name}</div><div class="ci-pr">NT$${i.price}</div></div>
+      <button class="ci-rm" onclick="removeCI(${i.id})">✕</button>
+    </div>`).join('');
+}
+
+function checkout(){
+  if(!cart.length) return;
+  cart = [];
+  renderCart();
+  renderOrderItems();
+  toggleCart();
+  showToast('✓ 訂單已送出！謝謝你的支持 ☕');
+}
+
+// ── Order items (從購物車同步) ──
+function renderOrderItems(){
+  const wrap     = document.getElementById('order-items');
+  const empty    = document.getElementById('oi-empty');
+  const subtotal = document.getElementById('order-total');
+  if(!wrap) return;
+
+  wrap.querySelectorAll('.oi-cart-row').forEach(r => r.remove());
+  const sub = wrap.querySelector('.oi-subtotal');
+
+  if(!cart.length){
+    empty && empty.classList.remove('hide');
+    if(subtotal) subtotal.textContent = 'NT$0';
+    return;
+  }
+  empty && empty.classList.add('hide');
+
+  // 合併同款，記錄 ids
+  const groups = {};
+  cart.forEach(i => {
+    if(groups[i.name]){ groups[i.name].qty++; groups[i.name].total += i.price; groups[i.name].ids.push(i.id); }
+    else groups[i.name] = {name:i.name, price:i.price, icon:i.icon, qty:1, total:i.price, ids:[i.id], type:i.type};
+  });
+
+  Object.values(groups).forEach(g => {
+    const row = document.createElement('div');
+    row.className = 'oi-cart-row';
+    const gkey = encodeURIComponent(g.name);
+    row.innerHTML = `
+      <span class="oi-cart-ico">${g.icon}</span>
+      <div class="oi-cart-info">
+        <div class="oi-cart-nm">${g.name}</div>
+      </div>
+      <div class="oi-qty-ctrl">
+        <button type="button" onclick="oiQty('${gkey}',-1)">−</button>
+        <span id="oiqty-${gkey}">${g.qty}</span>
+        <button type="button" onclick="oiQty('${gkey}',1)">+</button>
+      </div>
+      <span class="oi-cart-pr" id="oipr-${gkey}">NT$${g.total.toLocaleString()}</span>
+      <button class="oi-cart-rm" onclick="oiRemoveAll('${gkey}')" title="移除">✕</button>`;
+    wrap.insertBefore(row, sub);
+  });
+
+  const total = cart.reduce((a,i) => a + i.price, 0);
+  if(subtotal) subtotal.textContent = 'NT$' + total.toLocaleString();
+}
+
+// 訂單頁數量調整
+function oiQty(gkey, delta){
+  const name = decodeURIComponent(gkey);
+  const item = cart.find(i => i.name === name);
+  if(!item) return;
+  if(delta > 0){
+    // 加一個同款
+    cart.push({...item, id: Date.now()});
+  } else {
+    // 移除最後一個同款
+    const idx = cart.map(i=>i.name).lastIndexOf(name);
+    if(idx > -1){
+      cart.splice(idx,1);
+      if(!cart.find(i=>i.name===name)){
+        renderCart(); renderOrderItems(); return;
+      }
+    }
+  }
+  renderCart();
+  renderOrderItems();
+}
+function oiRemoveAll(gkey){
+  const name = decodeURIComponent(gkey);
+  cart = cart.filter(i => i.name !== name);
+  renderCart();
+  renderOrderItems();
+}
+
+// ── Order form ──
+function submitOrder(e){
+  e.preventDefault();
+  if(!cart.length){ showToast('請先加入商品到購物車！'); return; }
+  showToast('✓ 訂單已送出！謝謝你的支持 ☕');
+  cart = [];
+  renderCart();
+  renderOrderItems();
+  e.target.reset();
+}
+
+function showToast(m){
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 3200);
+}
+
+// ── Roast tabs ──
+function switchRoast(r){
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.rpanel').forEach(p => p.classList.remove('on'));
+  document.querySelector('.rtab.t' + r).classList.add('on');
+  document.getElementById('rp' + r).classList.add('on');
+}
+function goRoast(r){
+  document.getElementById('roasts').scrollIntoView({behavior:'smooth'});
+  setTimeout(() => switchRoast(r), 500);
+}
+
+// ── Scroll reveal ──
+const ro = new IntersectionObserver(
+  e => e.forEach(x => x.isIntersecting && x.target.classList.add('in')),
+  {threshold: .07}
+);
+document.querySelectorAll('.rv').forEach(el => {
+  ro.observe(el);
+  if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('in');
+});
+
+// ── Nav active ──
+const secs = document.querySelectorAll('section[id]');
+const nas  = document.querySelectorAll('.nav-links a');
+secs.forEach(s => {
+  new IntersectionObserver(e => e.forEach(en => {
+    if(en.isIntersecting)
+      nas.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id));
+  }), {threshold: .35}).observe(s);
+});
+
+// ── Escape key ──
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  ['csid','covl','mdraw','movl'].forEach(id => document.getElementById(id)?.classList.remove('on'));
+  document.getElementById('hbg')?.classList.remove('on');
+});
+
+// ── Init ──
+renderOrderItems();
+
+// 標準字預留框：src 空就顯示虛線框，有圖就顯示圖
+(function(){
+  const img = document.getElementById('wc-img');
+  const ph  = document.getElementById('wc-ph');
+  if(!img || !ph) return;
+  if(!img.src || img.src === window.location.href || img.getAttribute('src') === ''){
+    img.style.display = 'none';
+    ph.style.display  = 'flex';
+  } else {
+    ph.style.display = 'none';
+    img.onerror = () => { img.style.display='none'; ph.style.display='flex'; };
+  }
+})();
+</script>
+</body>
+</html>
