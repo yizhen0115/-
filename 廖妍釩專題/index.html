@@ -563,7 +563,42 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       <div class="or"><label class="ol">姓名</label><input class="oi" type="text" placeholder="廖妍釩" required></div>
       <div class="or"><label class="ol">電子信箱</label><input class="oi" type="email" placeholder="your@email.com" required></div>
       <div class="or"><label class="ol">聯絡電話</label><input class="oi" type="tel" placeholder="09xx-xxx-xxx"></div>
-      <div class="or"><label class="ol">收件地址</label><input class="oi" type="text" placeholder="縣市 / 區 / 街道 / 門號"></div>
+      <div class="or">
+        <label class="ol">配送方式</label>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'Noto Serif TC',serif;font-size:14px;">
+            <input type="radio" name="delivery" value="home" checked onchange="switchDelivery('home')" style="accent-color:var(--sour);width:16px;height:16px;">
+            住家地址
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'Noto Serif TC',serif;font-size:14px;">
+            <input type="radio" name="delivery" value="711" onchange="switchDelivery('711')" style="accent-color:var(--sour);width:16px;height:16px;">
+            7-11 門市取貨
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'Noto Serif TC',serif;font-size:14px;">
+            <input type="radio" name="delivery" value="family" onchange="switchDelivery('family')" style="accent-color:var(--sour);width:16px;height:16px;">
+            全家 FamilyMart 門市取貨
+          </label>
+        </div>
+      </div>
+      <!-- 住家地址欄 -->
+      <div class="or" id="field-home">
+        <label class="ol">收件地址</label>
+        <input class="oi" type="text" placeholder="縣市 / 區 / 街道 / 門號">
+      </div>
+      <!-- 7-11 門市欄 -->
+      <div class="or" id="field-711" style="display:none;">
+        <label class="ol">7-11 門市名稱</label>
+        <input class="oi" type="text" placeholder="例：台北信義門市">
+        <label class="ol" style="margin-top:8px;">門市地址</label>
+        <input class="oi" type="text" placeholder="縣市 / 區 / 街道">
+      </div>
+      <!-- 全家門市欄 -->
+      <div class="or" id="field-family" style="display:none;">
+        <label class="ol">全家門市名稱</label>
+        <input class="oi" type="text" placeholder="例：台北大安門市">
+        <label class="ol" style="margin-top:8px;">門市地址</label>
+        <input class="oi" type="text" placeholder="縣市 / 區 / 街道">
+      </div>
       <div class="or">
         <label class="ol">已選商品（來自購物車）</label>
         <div class="order-items" id="order-items">
@@ -620,6 +655,12 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
 </footer>
 
 <script>
+function switchDelivery(type){
+  document.getElementById('field-home').style.display   = type==='home'   ? 'flex' : 'none';
+  document.getElementById('field-711').style.display    = type==='711'    ? 'flex' : 'none';
+  document.getElementById('field-family').style.display = type==='family' ? 'flex' : 'none';
+}
+
 function toggleNav(){
   ['hbg','mdraw','movl'].forEach(id=>document.getElementById(id).classList.toggle('on'));
 }
@@ -704,9 +745,76 @@ function oiRemoveAll(gkey){
 
 function submitOrder(e){
   e.preventDefault();
-  if(!cart.length){showToast('請先加入商品到購物車！');return;}
-  showToast('✓ 訂單已送出！謝謝你的支持 ☕');
-  cart=[];renderCart();renderOrderItems();e.target.reset();
+  if(!cart.length){ showToast('請先加入商品到購物車！'); return; }
+
+  const form = e.target;
+  const name    = form.querySelector('input[type="text"]').value;
+  const email   = form.querySelector('input[type="email"]').value;
+  const tel     = form.querySelector('input[type="tel"]').value;
+  const payment = form.querySelector('input[name="payment"]:checked')?.value === 'transfer' ? '銀行轉帳' : '貨到付款';
+  const delivery= form.querySelector('input[name="delivery"]:checked')?.value;
+  let address = '';
+  if(delivery==='home'){
+    const homeInput = document.querySelector('#field-home input');
+    address = '住家：' + (homeInput?.value || '');
+  } else if(delivery==='711'){
+    const inputs = document.getElementById('field-711').querySelectorAll('input');
+    address = '7-11門市：' + (inputs[0]?.value||'') + '，地址：' + (inputs[1]?.value||'');
+  } else {
+    const inputs = document.getElementById('field-family').querySelectorAll('input');
+    address = '全家門市：' + (inputs[0]?.value||'') + '，地址：' + (inputs[1]?.value||'');
+  }
+  const note = form.querySelectorAll('input[type="text"]')[form.querySelectorAll('input[type="text"]').length-1].value;
+
+  const groups={};
+  cart.forEach(i=>{
+    if(groups[i.name]){groups[i.name].qty++;groups[i.name].total+=i.price;}
+    else groups[i.name]={name:i.name,qty:1,total:i.price};
+  });
+  const items = Object.values(groups).map(g=>`・${g.name} × ${g.qty}  NT$${g.total.toLocaleString()}`).join('\n');
+  const total = cart.reduce((a,i)=>a+i.price,0);
+
+  const messageBody =
+`姓名：${name}
+信箱：${email}
+電話：${tel}
+配送：${address}
+付款：${payment}
+
+──── 訂購商品 ────
+${items}
+
+合計：NT$${total.toLocaleString()}
+
+備註：${note||'無'}`;
+
+  const btn = form.querySelector('.osub');
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxjZd-BoCRyDBMvhtGCsfZ8ol16cEnQA3usFFj8UjyNFD4cNJRFC6EMHhER81W0tFGVPg/exec';
+
+  btn.textContent = '傳送中…';
+  btn.disabled = true;
+
+  fetch(GAS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      subject: `【三分時緒】訂單通知 - ${name}`,
+      message: messageBody
+    })
+  })
+  .then(() => {
+    showToast('✓ 訂單已送出！謝謝你的支持 ☕');
+    cart=[];renderCart();renderOrderItems();form.reset();
+    btn.textContent='送出訂單 →';btn.disabled=false;
+    document.getElementById('field-home').style.display='flex';
+    document.getElementById('field-711').style.display='none';
+    document.getElementById('field-family').style.display='none';
+  })
+  .catch(() => {
+    showToast('❌ 寄送失敗，請稍後再試');
+    btn.textContent='送出訂單 →';btn.disabled=false;
+  });
 }
 function showToast(m){
   const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');
