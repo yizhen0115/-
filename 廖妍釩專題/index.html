@@ -632,9 +632,10 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       <div class="note-box">
         <strong>注意事項</strong>
         ・訂單送出後將以 Email 確認<br>
-        ・付款方式：銀行轉帳 / 超商代碼<br>
+        ・付款方式：銀行轉帳 / 貨到付款<br>
         ・出貨時間：確認付款後 3–5 個工作天<br>
-        ・如需發票請於備註欄說明
+        ・如需發票請於備註欄說明<br>
+        ・如有問題請來信：<a href="mailto:s314820@tlhc.ylc.edu.tw" style="color:var(--sweet);text-underline-offset:3px;">s314820@tlhc.ylc.edu.tw</a>
       </div>
       <img src="packaging.png" alt="包裝展示" style="width:100%;height:auto;border-radius:4px;">
     </div>
@@ -774,6 +775,17 @@ function submitOrder(e){
   const items = Object.values(groups).map(g=>`・${g.name} × ${g.qty}  NT$${g.total.toLocaleString()}`).join('\n');
   const total = cart.reduce((a,i)=>a+i.price,0);
 
+  const paymentInfo = payment === '銀行轉帳'
+    ? '\n\n【付款資訊】請於3天內完成匯款\n' +
+      '────────────────\n' +
+      '銀行：玉山銀行（808）\n' +
+      '分行：斗六分行\n' +
+      '帳號：0391-940-123456\n' +
+      '戶名：廖妍釩\n' +
+      '────────────────\n' +
+      '※ 匯款後請保留收據，並回信告知匯款帳號後五碼。\n'
+    : '\n\n【付款方式】貨到付款\n請於收到商品時以現金支付，謝謝！\n';
+
   const messageBody =
 `姓名：${name}
 信箱：${email}
@@ -786,10 +798,10 @@ ${items}
 
 合計：NT$${total.toLocaleString()}
 
-備註：${note||'無'}`;
+備註：${note||'無'}${paymentInfo}`;
 
   const btn = form.querySelector('.osub');
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxjZd-BoCRyDBMvhtGCsfZ8ol16cEnQA3usFFj8UjyNFD4cNJRFC6EMHhER81W0tFGVPg/exec';
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbyVibkb25ixPrbMmNqfnjQZRRfXYpmGzvOOwoHovfUFUfQ-mMxkBHV8G90AK5VRMU0K2A/exec';
 
   btn.textContent = '傳送中…';
   btn.disabled = true;
@@ -800,7 +812,9 @@ ${items}
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       subject: `【三分時緒】訂單通知 - ${name}`,
-      message: messageBody
+      message: messageBody,
+      customer_email: email,
+      customer_name: name,
     })
   })
   .then(() => {
