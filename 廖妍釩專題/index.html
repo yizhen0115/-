@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>三分時緒 · 自創品牌</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;700;900&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+    emailjs.init({ publicKey: "ntu1Rpv4wOrG4qpM6" });
+  })();
+</script>
 <style>
 :root{
   --sour:#b5a84a;--sour-bg:#ede8d5;
@@ -754,16 +760,21 @@ function submitOrder(e){
   const tel     = form.querySelector('input[type="tel"]').value;
   const payment = form.querySelector('input[name="payment"]:checked')?.value === 'transfer' ? '銀行轉帳' : '貨到付款';
   const delivery= form.querySelector('input[name="delivery"]:checked')?.value;
+
+  let deliveryLabel = '';
   let address = '';
   if(delivery==='home'){
+    deliveryLabel = '寄送到府';
     const homeInput = document.querySelector('#field-home input');
-    address = '住家：' + (homeInput?.value || '');
+    address = homeInput?.value || '';
   } else if(delivery==='711'){
+    deliveryLabel = '7-11 門市取貨';
     const inputs = document.getElementById('field-711').querySelectorAll('input');
-    address = '7-11門市：' + (inputs[0]?.value||'') + '，地址：' + (inputs[1]?.value||'');
+    address = (inputs[0]?.value||'') + '　地址：' + (inputs[1]?.value||'');
   } else {
+    deliveryLabel = '全家門市取貨';
     const inputs = document.getElementById('field-family').querySelectorAll('input');
-    address = '全家門市：' + (inputs[0]?.value||'') + '，地址：' + (inputs[1]?.value||'');
+    address = (inputs[0]?.value||'') + '　地址：' + (inputs[1]?.value||'');
   }
   const note = form.querySelectorAll('input[type="text"]')[form.querySelectorAll('input[type="text"]').length-1].value;
 
@@ -772,63 +783,39 @@ function submitOrder(e){
     if(groups[i.name]){groups[i.name].qty++;groups[i.name].total+=i.price;}
     else groups[i.name]={name:i.name,qty:1,total:i.price};
   });
-  const items = Object.values(groups).map(g=>`・${g.name} × ${g.qty}  NT$${g.total.toLocaleString()}`).join('\n');
+  const items = Object.values(groups).map(g=>`・${g.name} × ${g.qty}　NT$${g.total.toLocaleString()}`).join('\n');
   const total = cart.reduce((a,i)=>a+i.price,0);
 
-  const paymentInfo = payment === '銀行轉帳'
-    ? '\n\n【付款資訊】請於3天內完成匯款\n' +
-      '────────────────\n' +
-      '銀行：玉山銀行（808）\n' +
-      '分行：斗六分行\n' +
-      '帳號：0391-940-123456\n' +
-      '戶名：廖妍釩\n' +
-      '────────────────\n' +
-      '※ 匯款後請保留收據，並回信告知匯款帳號後五碼。\n'
-    : '\n\n【付款方式】貨到付款\n請於收到商品時以現金支付，謝謝！\n';
-
-  const messageBody =
-`姓名：${name}
-信箱：${email}
-電話：${tel}
-配送：${address}
-付款：${payment}
-
-──── 訂購商品 ────
-${items}
-
-合計：NT$${total.toLocaleString()}
-
-備註：${note||'無'}${paymentInfo}`;
-
   const btn = form.querySelector('.osub');
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbyVibkb25ixPrbMmNqfnjQZRRfXYpmGzvOOwoHovfUFUfQ-mMxkBHV8G90AK5VRMU0K2A/exec';
-
   btn.textContent = '傳送中…';
   btn.disabled = true;
 
-  fetch(GAS_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      subject: `【三分時緒】訂單通知 - ${name}`,
-      message: messageBody,
-      customer_email: email,
-      customer_name: name,
+  const templateParams = {
+    name: name,
+    email: email,
+    phone: tel || '未提供',
+    delivery: deliveryLabel,
+    address: address,
+    items: items,
+    total: total.toLocaleString(),
+    payment: payment,
+    note: note || '無'
+  };
+
+  emailjs.send('service_7ibccg7', 'template_yim1qti', templateParams)
+    .then(() => {
+      showToast('✓ 訂單已送出！謝謝你的支持 ☕');
+      cart=[];renderCart();renderOrderItems();form.reset();
+      btn.textContent='送出訂單 →';btn.disabled=false;
+      document.getElementById('field-home').style.display='flex';
+      document.getElementById('field-711').style.display='none';
+      document.getElementById('field-family').style.display='none';
     })
-  })
-  .then(() => {
-    showToast('✓ 訂單已送出！謝謝你的支持 ☕');
-    cart=[];renderCart();renderOrderItems();form.reset();
-    btn.textContent='送出訂單 →';btn.disabled=false;
-    document.getElementById('field-home').style.display='flex';
-    document.getElementById('field-711').style.display='none';
-    document.getElementById('field-family').style.display='none';
-  })
-  .catch(() => {
-    showToast('❌ 寄送失敗，請稍後再試');
-    btn.textContent='送出訂單 →';btn.disabled=false;
-  });
+    .catch((err) => {
+      console.error('EmailJS Error:', err);
+      showToast('❌ 寄送失敗，請稍後再試');
+      btn.textContent='送出訂單 →';btn.disabled=false;
+    });
 }
 function showToast(m){
   const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');
