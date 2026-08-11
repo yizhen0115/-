@@ -786,6 +786,17 @@ function submitOrder(e){
   const items = Object.values(groups).map(g=>`・${g.name} × ${g.qty}　NT$${g.total.toLocaleString()}`).join('\n');
   const total = cart.reduce((a,i)=>a+i.price,0);
 
+  const paymentInfo = payment === '銀行轉帳'
+    ? '\n【付款資訊】請於3天內完成匯款\n' +
+      '────────────────\n' +
+      '銀行：測試銀行（000）\n' +
+      '分行：測試分行\n' +
+      '帳號：0000-000-000000\n' +
+      '戶名：測試用戶\n' +
+      '────────────────\n' +
+      '※ 匯款後請保留收據，並回信告知匯款帳號後五碼。'
+    : '\n【付款方式】貨到付款\n請於收到商品時以現金支付，謝謝！';
+
   const btn = form.querySelector('.osub');
   btn.textContent = '傳送中…';
   btn.disabled = true;
@@ -799,7 +810,8 @@ function submitOrder(e){
     items: items,
     total: total.toLocaleString(),
     payment: payment,
-    note: note || '無'
+    note: note || '無',
+    payment_info: paymentInfo
   };
 
   emailjs.send('service_7ibccg7', 'template_yim1qti', templateParams)
