@@ -317,7 +317,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       <div class="h-flavor-list rv d2">
         <div class="hfl" onclick="goRoast('s')">
           <div class="hfl-dot" style="background:var(--sour)"></div>
-          <div><div class="hfl-zh" style="color:var(--sour)">淺焙</div><div class="hfl-sub">Cinnamon Roast</div></div>
+          <div><div class="hfl-zh" style="color:var(--sour)">淺焙</div><div class="hfl-sub">Light Roast</div></div>
         </div>
         <div class="hfl" onclick="goRoast('w')">
           <div class="hfl-dot" style="background:var(--sweet)"></div>
@@ -325,15 +325,15 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
         </div>
         <div class="hfl" onclick="goRoast('b')">
           <div class="hfl-dot" style="background:var(--bitter)"></div>
-          <div><div class="hfl-zh" style="color:var(--bitter)">深焙</div><div class="hfl-sub">French Roast</div></div>
+          <div><div class="hfl-zh" style="color:var(--bitter)">深焙</div><div class="hfl-sub">Dark Roast</div></div>
         </div>
       </div>
     </div>
     <div class="hl-deco">
       <div class="hl-circle"></div>
       <div class="hl-mascot-l" onclick="goRoast('s')">
-        <img src="cinnamon.png" alt="CINNAMON" style="width:65px;height:auto;display:block;">
-        <div class="mascot-tag"><div class="mn" style="color:var(--sour)">CINNAMON</div></div>
+        <img src="cinnamon.png" alt="LIGHT" style="width:65px;height:auto;display:block;">
+        <div class="mascot-tag"><div class="mn" style="color:var(--sour)">LIGHT</div></div>
       </div>
     </div>
   </div>
@@ -364,8 +364,8 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       <div class="mascot-tag"><div class="mn" style="color:var(--sweet)">MEDIUM</div></div>
     </div>
     <div class="hr-mascot-b" onclick="goRoast('b')">
-      <img src="french.png" alt="FRENCH">
-      <div class="mascot-tag"><div class="mn" style="color:var(--bitter)">FRENCH</div></div>
+      <img src="french.png" alt="DARK">
+      <div class="mascot-tag"><div class="mn" style="color:var(--bitter)">DARK</div></div>
     </div>
   </div>
 </section>
@@ -380,9 +380,9 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
     <p class="sec-p">很多人不是不累，而是習慣把情緒吞下去。三分時緒想做一件事——讓情緒，可以被看見。<br><br>透過淺焙、中焙、深焙三種烘焙程度作為媒介，將壓力、療癒、堅韌三種情緒狀態，轉化為可被感受的視覺語言，讓每一杯咖啡都成為一次情緒的對話。</p>
   </div>
   <div class="flavor-cards rv d1" style="margin-bottom:40px;">
-    <div class="fc fc-sour"><div class="fc-zh" style="color:var(--sour)">淺焙</div><div class="fc-en">Cinnamon Roast</div><div class="fc-desc">早晨・壓力・辛酸</div></div>
+    <div class="fc fc-sour"><div class="fc-zh" style="color:var(--sour)">淺焙</div><div class="fc-en">Light Roast</div><div class="fc-desc">早晨・壓力・辛酸</div></div>
     <div class="fc fc-sweet"><div class="fc-zh" style="color:var(--sweet)">中焙</div><div class="fc-en">Medium Roast</div><div class="fc-desc">午後・休息・療癒</div></div>
-    <div class="fc fc-bitter"><div class="fc-zh" style="color:var(--bitter)">深焙</div><div class="fc-en">French Roast</div><div class="fc-desc">夜晚・堅持・苦韻</div></div>
+    <div class="fc fc-bitter"><div class="fc-zh" style="color:var(--bitter)">深焙</div><div class="fc-en">Dark Roast</div><div class="fc-desc">夜晚・堅持・苦韻</div></div>
   </div>
   <!-- 三張圖完整顯示，不裁切 -->
   <div class="story-imgs rv d2">
@@ -398,9 +398,9 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
   <div class="sec-bar rv" style="background:var(--sweet)"></div>
   <h2 class="sec-h rv">選一種，感受你的情緒</h2>
   <div class="rtabs rv d1">
-    <button class="rtab ts on" onclick="switchRoast('s')">淺焙<span class="rtab-sub">Cinnamon · Sour</span></button>
+    <button class="rtab ts on" onclick="switchRoast('s')">淺焙<span class="rtab-sub">Light · Sour</span></button>
     <button class="rtab tw" onclick="switchRoast('w')">中焙<span class="rtab-sub">Medium · Sweet</span></button>
-    <button class="rtab tb" onclick="switchRoast('b')">深焙<span class="rtab-sub">French · Bitter</span></button>
+    <button class="rtab tb" onclick="switchRoast('b')">深焙<span class="rtab-sub">Dark · Bitter</span></button>
   </div>
   <div class="rpanel on" id="rps">
     <div style="display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;">
@@ -415,9 +415,9 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
           <span class="rp-tag" style="color:var(--sour);border-color:var(--sour)">失衡</span>
           <span class="rp-tag" style="color:var(--sour);border-color:var(--sour)">清晨感</span>
         </div>
-        <p class="rp-spec">烘焙程度：淺・口感清爽<br>情緒對應：早晨・辛酸・壓力<br>吉祥物：CINNAMON（圓形無角）</p>
+        <p class="rp-spec">烘焙程度：淺・口感清爽<br>情緒對應：早晨・辛酸・壓力<br>吉祥物：LIGHT（圓形無角）</p>
       </div>
-      <img src="cinnamon-q.png" alt="CINNAMON" style="width:180px;height:auto;display:block;flex-shrink:0;">
+      <img src="cinnamon-q.png" alt="LIGHT" style="width:180px;height:auto;display:block;flex-shrink:0;">
     </div>
   </div>
   <div class="rpanel" id="rpw">
@@ -451,9 +451,9 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
           <span class="rp-tag" style="color:var(--bitter);border-color:var(--bitter)">冷靜</span>
           <span class="rp-tag" style="color:var(--bitter);border-color:var(--bitter)">深夜感</span>
         </div>
-        <p class="rp-spec">烘焙程度：深・口感厚重<br>情緒對應：夜晚・現實・疲憊但持續<br>吉祥物：FRENCH（方形多角）</p>
+        <p class="rp-spec">烘焙程度：深・口感厚重<br>情緒對應：夜晚・現實・疲憊但持續<br>吉祥物：DARK（方形多角）</p>
       </div>
-      <img src="french-q.png" alt="FRENCH" style="width:180px;height:auto;display:block;flex-shrink:0;">
+      <img src="french-q.png" alt="DARK" style="width:180px;height:auto;display:block;flex-shrink:0;">
     </div>
   </div>
 </section>
@@ -477,9 +477,9 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       <p class="ps" style="font-size:13px;margin-bottom:20px;">淺焙・中焙・深焙 · 三款咖啡包各一入</p>
       <div class="giftbox-contents">
         <p style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;opacity:.4;margin-bottom:10px;">內含商品</p>
-        <div class="gc-item"><span class="gc-dot" style="background:var(--sour)"></span><span>淺焙咖啡包</span><span class="gc-price">Cinnamon Roast</span></div>
+        <div class="gc-item"><span class="gc-dot" style="background:var(--sour)"></span><span>淺焙咖啡包</span><span class="gc-price">Light Roast</span></div>
         <div class="gc-item"><span class="gc-dot" style="background:var(--sweet)"></span><span>中焙咖啡包</span><span class="gc-price">Medium Roast</span></div>
-        <div class="gc-item"><span class="gc-dot" style="background:var(--bitter)"></span><span>深焙咖啡包</span><span class="gc-price">French Roast</span></div>
+        <div class="gc-item"><span class="gc-dot" style="background:var(--bitter)"></span><span>深焙咖啡包</span><span class="gc-price">Dark Roast</span></div>
         <div class="gc-divider"></div>
         <div class="gc-item"><span style="opacity:.45;font-size:11px;">三款各一入</span><span class="gc-price">NT$250</span></div>
       </div>
@@ -500,7 +500,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
     <div class="pcard">
       <div class="pcard-img"><div class="iph" style="aspect-ratio:1;border:none;border-radius:0"><p>【圖檔】吊飾・淺淺</p></div><span class="pbadge bs">吊飾</span></div>
       <div class="pcard-body">
-        <div class="pn">吊飾・淺淺</div><div class="ps">CINNAMON · 淺焙角色</div><div class="pp">NT$40</div>
+        <div class="pn">吊飾・淺淺</div><div class="ps">LIGHT · 淺焙角色</div><div class="pp">NT$40</div>
         <div class="pcard-add-row">
           <div class="pcard-qty"><button type="button" onclick="event.stopPropagation();pQty('qc1',-1)">−</button><span id="qc1" class="pcard-qty-n">1</span><button type="button" onclick="event.stopPropagation();pQty('qc1',1)">+</button></div>
           <button class="padd" onclick="event.stopPropagation();pAddCart('qc1','吊飾・淺淺',40,'🔮','s')">加入購物車</button>
@@ -520,7 +520,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
     <div class="pcard">
       <div class="pcard-img"><div class="iph" style="aspect-ratio:1;border:none;border-radius:0"><p>【圖檔】吊飾・深深</p></div><span class="pbadge bb">吊飾</span></div>
       <div class="pcard-body">
-        <div class="pn">吊飾・深深</div><div class="ps">FRENCH · 深焙角色</div><div class="pp">NT$40</div>
+        <div class="pn">吊飾・深深</div><div class="ps">DARK · 深焙角色</div><div class="pp">NT$40</div>
         <div class="pcard-add-row">
           <div class="pcard-qty"><button type="button" onclick="event.stopPropagation();pQty('qc3',-1)">−</button><span id="qc3" class="pcard-qty-n">1</span><button type="button" onclick="event.stopPropagation();pQty('qc3',1)">+</button></div>
           <button class="padd" onclick="event.stopPropagation();pAddCart('qc3','吊飾・深深',40,'🔮','b')">加入購物車</button>
@@ -647,9 +647,9 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
     <div class="ftbrand">三分<br>時緒</div>
     <div class="ftzh">TASTE AS LANGUAGE</div>
     <div class="ft3">
-      <div><div class="ft3i-en" style="color:var(--sour-bg)">Cinnamon Roast</div><div class="ft3i-zh" style="color:var(--sour-bg)">淺焙・辛酸</div><p class="ft3i-d">清晨的壓力，有些酸澀</p></div>
+      <div><div class="ft3i-en" style="color:var(--sour-bg)">Light Roast</div><div class="ft3i-zh" style="color:var(--sour-bg)">淺焙・辛酸</div><p class="ft3i-d">清晨的壓力，有些酸澀</p></div>
       <div><div class="ft3i-en" style="color:var(--sweet-bg)">Medium Roast</div><div class="ft3i-zh" style="color:var(--sweet-bg)">中焙・回甘</div><p class="ft3i-d">午後的留白，慢慢回甘</p></div>
-      <div><div class="ft3i-en" style="color:var(--bitter-bg)">French Roast</div><div class="ft3i-zh" style="color:var(--bitter-bg)">深焙・苦韻</div><p class="ft3i-d">夜晚的堅持，是生活底色</p></div>
+      <div><div class="ft3i-en" style="color:var(--bitter-bg)">Dark Roast</div><div class="ft3i-zh" style="color:var(--bitter-bg)">深焙・苦韻</div><p class="ft3i-d">夜晚的堅持，是生活底色</p></div>
     </div>
   </div>
   <div><p class="ftinfo"><strong>廖妍釩</strong>國立斗六家商<br>廣二辛</p></div>
