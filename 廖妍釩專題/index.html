@@ -814,7 +814,9 @@ function submitOrder(e){
     payment_info: paymentInfo
   };
 
-  emailjs.send('service_7ibccg7', 'template_yim1qti', templateParams)
+  emailjs.send('service_7ibccg7', 'template_yim1qti', templateParams);
+
+  emailjs.send('service_7ibccg7', 'template_sat0ssl', templateParams)
     .then(() => {
       showToast('✓ 訂單已送出！謝謝你的支持 ☕');
       cart=[];renderCart();renderOrderItems();form.reset();
