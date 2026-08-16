@@ -73,7 +73,7 @@ img{display:block;max-width:100%;height:auto}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* HERO */
-#hero{height:clamp(640px,100svh,960px);width:100%;max-width:1800px;margin:0 auto;background:var(--paper);display:grid;grid-template-columns:clamp(200px,16vw,300px) 1fr clamp(190px,15vw,280px);position:relative;overflow:visible;}
+#hero{height:clamp(560px,88svh,820px);width:100%;max-width:1800px;margin:0 auto;background:var(--paper);display:grid;grid-template-columns:clamp(200px,16vw,300px) 1fr clamp(190px,15vw,280px);position:relative;overflow:visible;}
 .hl{padding:clamp(72px,10vh,100px) 0 clamp(40px,7vh,60px) clamp(24px,5vw,64px);display:flex;flex-direction:column;position:relative;z-index:2;overflow:visible;height:100%;}
 .h-eyebrow{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.25em;opacity:.45;margin-bottom:6px}
 .h-rule{width:180px;height:1px;background:rgba(26,26,24,.15);margin-bottom:36px}
@@ -83,9 +83,12 @@ img{display:block;max-width:100%;height:auto}
 .hfl-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
 .hfl-zh{font-family:'Noto Serif TC',serif;font-weight:700;font-size:18px;letter-spacing:.1em}
 .hfl-sub{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.4;margin-top:2px}
-.hl-deco{position:absolute;bottom:-20px;left:-20px;z-index:0}
-.hl-circle{width:200px;height:200px;border-radius:50%;background:var(--sour-bg);opacity:.55}
-.hl-mascot-l{position:absolute;bottom:10%;left:8%;z-index:2;transition:transform .4s;cursor:pointer}
+.hl-deco{position:absolute;bottom:0;left:0;right:0;top:0;z-index:0;overflow:visible;}
+.hl-deco::before{content:'';position:absolute;bottom:8%;left:-40px;width:clamp(160px,15vw,240px);height:clamp(160px,15vw,240px);border-radius:50%;background:var(--sour-bg);opacity:.5}
+.hl-deco::after{content:'';position:absolute;bottom:32%;left:12%;width:60px;height:60px;border-radius:50%;background:var(--bitter-bg);opacity:.4}
+.hl-deco-line{position:absolute;top:46%;bottom:22%;left:9%;width:1px;background:linear-gradient(to bottom,rgba(26,26,24,0),rgba(26,26,24,.14),rgba(26,26,24,0));z-index:1;}
+.hl-circle{display:none}
+.hl-mascot-l{position:absolute;bottom:9%;left:6%;z-index:2;transition:transform .4s;cursor:pointer}
 .hl-mascot-l:hover{transform:translateY(-8px)}
 .hl-mascot-l img{width:clamp(52px,5vw,72px);height:auto;display:block;}
 .hm{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(20px,6vh,80px) 24px clamp(20px,5vh,60px);z-index:2;position:relative;height:100%;}
@@ -102,6 +105,8 @@ img{display:block;max-width:100%;height:auto}
 .hr{position:relative;z-index:1;overflow:visible;height:100%;}
 .hr-tri{position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 clamp(160px,15vw,260px) clamp(130px,14vh,200px) 0;border-color:transparent var(--sweet-bg) transparent transparent;opacity:.75}
 .hr-rect{position:absolute;bottom:12%;right:0;width:clamp(48px,5vw,80px);height:30vh;background:var(--bitter-bg);opacity:.7}
+.hr::before{content:'';position:absolute;top:38%;right:8%;width:clamp(120px,12vw,190px);height:clamp(120px,12vw,190px);border-radius:50%;background:var(--sour-bg);opacity:.32}
+.hr-deco-line{position:absolute;top:32%;bottom:26%;right:22%;width:1px;background:linear-gradient(to bottom,rgba(26,26,24,0),rgba(26,26,24,.14),rgba(26,26,24,0));z-index:1;}
 .hr-mascot-t{position:absolute;top:24%;right:12%;z-index:3;cursor:pointer;transition:transform .4s}
 .hr-mascot-t:hover{transform:translateY(-10px)}
 .hr-mascot-t img{width:clamp(44px,4.4vw,64px);height:auto;display:block;filter:drop-shadow(0 4px 14px rgba(0,0,0,.1))}
@@ -335,6 +340,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
     </div>
     <div class="hl-deco">
       <div class="hl-circle"></div>
+      <div class="hl-deco-line"></div>
       <div class="hl-mascot-l" onclick="goRoast('s')">
         <img src="cinnamon.png" alt="LIGHT" style="width:65px;height:auto;display:block;">
         <div class="mascot-tag"><div class="mn" style="color:var(--sour)">LIGHT</div></div>
@@ -361,6 +367,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
   <div class="hr">
     <div class="hr-tri"></div>
     <div class="hr-rect"></div>
+    <div class="hr-deco-line"></div>
     <div class="hr-mascot-t" onclick="goRoast('w')">
       <img src="medium.png" alt="MEDIUM">
       <div class="mascot-tag"><div class="mn" style="color:var(--sweet)">MEDIUM</div></div>
