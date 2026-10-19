@@ -162,6 +162,14 @@ img{display:block;max-width:100%;height:auto}
 .rp-spec{font-family:'DM Sans',sans-serif;font-size:13px;line-height:2;opacity:.55;margin-top:14px}
 
 /* SHOP */
+/* 商品圖背景色 */
+.merch-bg{position:relative;display:flex;align-items:center;justify-content:center}
+.merch-bg img{mix-blend-mode:multiply;background:transparent!important}
+.mbg-light{background:var(--sour-bg)}
+.mbg-medium{background:var(--sweet-bg)}
+.mbg-dark{background:var(--bitter-bg)}
+.mbg-mix{background:#efe8dc}
+
 #shop{background:var(--paper)}
 .pcard{background:var(--cream);border-radius:4px;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s}
 .pcard:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.1)}
@@ -471,8 +479,8 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
   <h2 class="sec-h rv">選一款，帶走你的情緒</h2>
 
   <div class="shop-row2 rv d1">
-    <div class="giftbox-img-wrap">
-      <img src="giftbox.png" alt="三分時緒禮盒組" style="object-fit:contain;background:#fff;padding:20px">
+    <div class="giftbox-img-wrap merch-bg mbg-mix">
+      <img src="giftbox.png" alt="三分時緒禮盒組" style="object-fit:contain;padding:28px">
     </div>
     <div class="giftbox-info">
       <span class="pbadge bw" style="position:static;display:inline-block;margin-bottom:16px;">禮盒</span>
@@ -501,7 +509,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
 
   <div class="shop-row1 rv d2">
     <div class="pcard">
-      <div class="pcard-img"><img src="charm-light.png" alt="吊飾・淺淺" style="width:100%;aspect-ratio:1;object-fit:contain;background:#fff;padding:14px"><span class="pbadge bs">吊飾</span></div>
+      <div class="pcard-img merch-bg mbg-light"><img src="charm-light.png" alt="吊飾・淺淺" style="width:100%;aspect-ratio:1;object-fit:contain;padding:14px"><span class="pbadge bs">吊飾</span></div>
       <div class="pcard-body">
         <div class="pn">吊飾・淺淺</div><div class="ps">LIGHT · 淺焙角色</div><div class="pp">NT$40</div>
         <div class="pcard-add-row">
@@ -511,7 +519,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       </div>
     </div>
     <div class="pcard">
-      <div class="pcard-img"><img src="charm-medium.png" alt="吊飾・中中" style="width:100%;aspect-ratio:1;object-fit:contain;background:#fff;padding:14px"><span class="pbadge bw">吊飾</span></div>
+      <div class="pcard-img merch-bg mbg-medium"><img src="charm-medium.png" alt="吊飾・中中" style="width:100%;aspect-ratio:1;object-fit:contain;padding:14px"><span class="pbadge bw">吊飾</span></div>
       <div class="pcard-body">
         <div class="pn">吊飾・中中</div><div class="ps">MEDIUM · 中焙角色</div><div class="pp">NT$40</div>
         <div class="pcard-add-row">
@@ -521,7 +529,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       </div>
     </div>
     <div class="pcard">
-      <div class="pcard-img"><img src="charm-dark.png" alt="吊飾・深深" style="width:100%;aspect-ratio:1;object-fit:contain;background:#fff;padding:14px"><span class="pbadge bb">吊飾</span></div>
+      <div class="pcard-img merch-bg mbg-dark"><img src="charm-dark.png" alt="吊飾・深深" style="width:100%;aspect-ratio:1;object-fit:contain;padding:14px"><span class="pbadge bb">吊飾</span></div>
       <div class="pcard-body">
         <div class="pn">吊飾・深深</div><div class="ps">DARK · 深焙角色</div><div class="pp">NT$40</div>
         <div class="pcard-add-row">
@@ -534,7 +542,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
 
   <div class="shop-row-2col rv d3">
     <div class="pcard">
-      <div class="pcard-img"><img src="sticker.png" alt="情緒貼紙組" style="width:100%;aspect-ratio:16/9;object-fit:contain;background:#fff;padding:14px"><span class="pbadge bs">貼紙</span></div>
+      <div class="pcard-img merch-bg mbg-mix"><img src="sticker.png" alt="情緒貼紙組" style="width:100%;aspect-ratio:16/9;object-fit:contain;padding:14px"><span class="pbadge bs">貼紙</span></div>
       <div class="pcard-body">
         <div class="pn">情緒貼紙組</div><div class="ps">三款角色 · 各式圖樣</div><div class="pp">NT$10</div>
         <div class="pcard-add-row">
@@ -544,7 +552,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       </div>
     </div>
     <div class="pcard">
-      <div class="pcard-img"><img src="postcard.png" alt="情緒明信片" style="width:100%;aspect-ratio:16/9;object-fit:contain;background:#fff;padding:14px"><span class="pbadge bb">明信片</span></div>
+      <div class="pcard-img merch-bg mbg-mix"><img src="postcard.png" alt="情緒明信片" style="width:100%;aspect-ratio:16/9;object-fit:contain;padding:14px"><span class="pbadge bb">明信片</span></div>
       <div class="pcard-body">
         <div class="pn">情緒明信片</div><div class="ps">酸甜苦 · 三款場景</div><div class="pp">NT$30</div>
         <div class="pcard-add-row">
