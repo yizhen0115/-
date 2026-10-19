@@ -278,6 +278,45 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
   .story-imgs{gap:10px}
 }
 @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important}}
+
+/* ===== 電腦版首頁美化 ===== */
+@media(min-width:961px){
+  #hero .hl-mascot-l img,#hero .hr-mascot-t img,#hero .hr-mascot-b img{mix-blend-mode:multiply;filter:none}
+  #hero{background:
+    radial-gradient(ellipse 60% 70% at 50% 55%,#ffffff 0%,rgba(255,255,255,0) 70%),
+    linear-gradient(180deg,#f7f4ee 0%,#f1ece2 100%);}
+  /* 左下、右上色塊 */
+  #hero::before{content:'';position:absolute;left:-6vw;bottom:-14vh;width:34vw;height:34vw;max-width:520px;max-height:520px;border-radius:50%;background:var(--sour-bg);opacity:.55;z-index:0}
+  #hero::after{content:'';position:absolute;right:-5vw;top:-10vh;width:30vw;height:30vw;max-width:460px;max-height:460px;border-radius:50%;background:var(--bitter-bg);opacity:.5;z-index:0}
+  .hr-tri{display:none}
+  /* 左側口味清單 */
+  .h-eyebrow{opacity:.6;color:var(--sweet)}
+  .h-rule{width:120px;background:var(--ink);opacity:.25}
+  .h-flavor-list{gap:26px}
+  .hfl{padding-left:14px;border-left:2px solid transparent;transition:border-color .25s,transform .25s}
+  .hfl:hover{opacity:1;transform:translateX(4px)}
+  .hfl:nth-child(1):hover{border-color:var(--sour)}
+  .hfl:nth-child(2):hover{border-color:var(--sweet)}
+  .hfl:nth-child(3):hover{border-color:var(--bitter)}
+  .hfl-zh{font-size:20px}
+  /* 吉祥物：各自有專屬色圓 */
+  .hl-deco{width:auto;height:auto;margin-left:0}
+  .hl-deco::before{display:none}
+  .hl-mascot-l{position:relative;bottom:auto;left:auto;width:clamp(150px,12vw,190px);height:clamp(150px,12vw,190px);border-radius:50%;background:var(--sour-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(120,100,40,.14)}
+  .hl-mascot-l img{width:clamp(84px,7vw,110px)!important}
+  .hr-mascots{gap:clamp(36px,6vh,64px);padding-right:0}
+  .hr-mascots::before{display:none}
+  .hr-mascot-t,.hr-mascot-b{width:clamp(140px,11vw,176px);height:clamp(140px,11vw,176px);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .hr-mascot-t{background:var(--sweet-bg);box-shadow:0 10px 30px rgba(160,88,30,.14);margin-right:30%}
+  .hr-mascot-b{background:var(--bitter-bg);box-shadow:0 10px 30px rgba(74,94,77,.16);margin-left:30%}
+  .hr-mascot-t img,.hr-mascot-b img{width:clamp(76px,6.4vw,100px)}
+  .mascot-tag .mn{font-size:9px;opacity:.8;font-weight:500}
+  /* 標準字卡片 */
+  .wordmark-card{border-radius:24px;box-shadow:0 24px 70px rgba(80,60,30,.12),0 4px 14px rgba(0,0,0,.04)}
+  .wordmark-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--sour) 0 33.3%,var(--sweet) 33.3% 66.6%,var(--bitter) 66.6% 100%)}
+  .wc-tagline{opacity:.55}
+  .hl,.hm,.hr{z-index:2}
+}
 </style>
 </head>
 <body>
