@@ -406,6 +406,7 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
       <div class="wc-cta">
         <a class="btn btn-ink" href="#shop">立即選購 →</a>
         <a class="btn btn-gh" href="#story">品牌故事</a>
+        <button class="btn btn-cam" type="button" onclick="openAR()">📷 情緒合照</button>
       </div>
     </div>
     <div class="s-hint">Scroll</div>
@@ -918,5 +919,184 @@ renderOrderItems();
   else{ph.style.display='none';img.onerror=()=>{img.style.display='none';ph.style.display='flex';};}
 })();
 </script>
+
+<!-- ===== 情緒合照（相機互動） ===== -->
+<style>
+.btn-cam{background:var(--sweet);color:#fff}.btn-cam:hover{opacity:.85}
+#arModal{position:fixed;inset:0;z-index:2000;background:#111;display:none;flex-direction:column}
+#arModal.on{display:flex}
+#arStage{position:relative;flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#arCanvas{width:100%;height:100%;object-fit:contain;touch-action:none;display:block}
+#arVideo{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+#arMsg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#f4f1ea;font-family:'DM Sans','Noto Serif TC',sans-serif;font-size:14px;letter-spacing:.08em;text-align:center;line-height:1.9;padding:0 24px;max-width:420px}
+#arTop{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;z-index:3;background:linear-gradient(to bottom,rgba(0,0,0,.45),transparent)}
+#arTop .t{color:#f4f1ea;font-family:'Noto Serif TC',serif;font-weight:700;letter-spacing:.3em;font-size:14px}
+.ar-ic{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.3);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#arBar{display:flex;align-items:center;justify-content:center;gap:28px;padding:18px 16px calc(18px + env(safe-area-inset-bottom));background:#111}
+#arShot{width:68px;height:68px;border-radius:50%;border:4px solid #f4f1ea;background:var(--sweet);cursor:pointer;box-shadow:0 0 0 4px rgba(244,241,234,.15)}
+#arShot:active{transform:scale(.94)}
+#arHint{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:rgba(244,241,234,.75);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.15em;z-index:3;pointer-events:none}
+#arPreview{position:fixed;inset:0;z-index:2100;background:rgba(17,17,17,.94);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px}
+#arPreview.on{display:flex}
+#arPreview img{max-width:min(92vw,720px);max-height:70vh;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#arPreview .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+#arPreview a,#arPreview button{padding:12px 26px;border-radius:999px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.18em;cursor:pointer;text-decoration:none;border:1px solid rgba(244,241,234,.4);background:transparent;color:#f4f1ea}
+#arPreview a{background:var(--sweet);border-color:var(--sweet)}
+</style>
+
+<div id="arModal" aria-hidden="true">
+  <div id="arStage">
+    <video id="arVideo" playsinline muted autoplay></video>
+    <canvas id="arCanvas"></canvas>
+    <div id="arMsg">正在開啟相機…</div>
+    <div id="arTop">
+      <button class="ar-ic" id="arClose" aria-label="關閉">✕</button>
+      <span class="t">情緒合照</span>
+      <button class="ar-ic" id="arFlip" aria-label="切換鏡頭">⟳</button>
+    </div>
+    <div id="arHint">點一下小人物，讓他跳起來</div>
+  </div>
+  <div id="arBar"><button id="arShot" aria-label="拍照"></button></div>
+</div>
+<div id="arPreview">
+  <img id="arPhoto" alt="情緒合照">
+  <div class="row">
+    <a id="arSave" download="三分時緒-情緒合照.png">下載照片</a>
+    <button id="arAgain">再拍一張</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const modal=document.getElementById('arModal'),video=document.getElementById('arVideo'),
+        cv=document.getElementById('arCanvas'),ctx=cv.getContext('2d'),msg=document.getElementById('arMsg');
+  let stream=null,facing='user',raf=null,last=0,mascots=[],ready=false;
+
+  // 讀取吉祥物圖片，並把外圍白底去掉（只去掉和邊緣相連的白色，角色裡面的白色保留）
+  function loadSprite(src){
+    return new Promise(res=>{
+      const img=new Image();
+      img.onload=()=>{
+        const c=document.createElement('canvas');c.width=img.width;c.height=img.height;
+        const x=c.getContext('2d');x.drawImage(img,0,0);
+        try{
+          const d=x.getImageData(0,0,c.width,c.height),p=d.data,w=c.width,h=c.height,seen=new Uint8Array(w*h),st=[];
+          const white=i=>p[i*4]>232&&p[i*4+1]>232&&p[i*4+2]>232;
+          for(let i=0;i<w;i++){st.push(i,(h-1)*w+i)}for(let j=0;j<h;j++){st.push(j*w,j*w+w-1)}
+          while(st.length){const i=st.pop();if(seen[i]||!white(i))continue;seen[i]=1;p[i*4+3]=0;
+            const cx=i%w,cy=(i/w)|0;if(cx>0)st.push(i-1);if(cx<w-1)st.push(i+1);if(cy>0)st.push(i-w);if(cy<h-1)st.push(i+w);}
+          x.putImageData(d,0,0);
+        }catch(e){}
+        res(c);
+      };
+      img.onerror=()=>res(null);
+      img.src=src;
+    });
+  }
+
+  async function setupMascots(){
+    const list=[['cinnamon.png','#b5a84a','淺淺'],['medium.png','#a0581e','中中'],['french.png','#4a5e4d','深深']];
+    const sprites=await Promise.all(list.map(l=>loadSprite(l[0])));
+    mascots=sprites.map((s,i)=>({img:s,color:list[i][1],name:list[i][2],
+      x:.2+.3*i,y:[.52,.68,.6][i],vx:(Math.random()<.5?-1:1)*(.10+Math.random()*.08),vy:0,
+      phase:Math.random()*6,jump:0,flip:1})).filter(m=>m.img);
+  }
+
+  function resize(){
+    const vw=video.videoWidth||1280,vh=video.videoHeight||720;
+    cv.width=vw;cv.height=vh;
+  }
+
+  function size(){return Math.min(cv.width,cv.height)*.26}
+
+  function draw(t){
+    raf=requestAnimationFrame(draw);
+    const dt=Math.min(.05,(t-last)/1000||0);last=t;
+    const W=cv.width,H=cv.height;
+    // 相機畫面（前鏡頭左右翻轉，像照鏡子）
+    ctx.save();
+    if(facing==='user'){ctx.translate(W,0);ctx.scale(-1,1);}
+    if(video.readyState>=2)ctx.drawImage(video,0,0,W,H);else{ctx.fillStyle='#222';ctx.fillRect(0,0,W,H);}
+    ctx.restore();
+    // 吉祥物
+    const S=size();
+    mascots.forEach(m=>{
+      m.phase+=dt*8;
+      m.x+=m.vx*dt;
+      if(m.x<.08){m.x=.08;m.vx=Math.abs(m.vx)}
+      if(m.x>.92){m.x=.92;m.vx=-Math.abs(m.vx)}
+      if(Math.random()<dt*.25)m.vx*=-1;                    // 偶爾轉身
+      if(Math.random()<dt*.15&&m.jump===0)m.vy=-1.1;        // 偶爾自己跳
+      if(m.vy!==0||m.jump>0){m.jump+=m.vy*dt;m.vy+=2.6*dt;if(m.jump>0){m.jump=0;m.vy=0}}
+      m.flip=m.vx<0?-1:1;
+      const hop=Math.abs(Math.sin(m.phase))*S*.08;          // 走路的小彈跳
+      const cx=m.x*W,cy=m.y*H+ m.jump*H - hop;
+      const r=m.img.width/m.img.height,w=S*r,h=S;
+      // 影子
+      ctx.fillStyle='rgba(0,0,0,.18)';ctx.beginPath();
+      ctx.ellipse(cx,m.y*H+h/2,w*.32*(1+m.jump*.8),h*.06,0,0,Math.PI*2);ctx.fill();
+      ctx.save();ctx.translate(cx,cy);ctx.scale(m.flip,1);
+      ctx.rotate(Math.sin(m.phase)*.06);
+      ctx.drawImage(m.img,-w/2,-h/2,w,h);ctx.restore();
+      m.box=[cx-w/2,cy-h/2,w,h];
+    });
+  }
+
+  async function start(){
+    msg.style.display='block';msg.textContent='正在開啟相機…';
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+      msg.innerHTML='這個瀏覽器不支援相機功能<br>請改用手機的 Chrome 或 Safari 開啟';return;
+    }
+    try{
+      stop(false);
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280},height:{ideal:720}},audio:false});
+      video.srcObject=stream;await video.play();
+      resize();msg.style.display='none';
+      if(!mascots.length)await setupMascots();
+      cancelAnimationFrame(raf);last=0;raf=requestAnimationFrame(draw);
+    }catch(e){
+      msg.innerHTML='無法開啟相機 😢<br>請確認已允許瀏覽器使用相機，<br>或電腦有連接鏡頭';
+    }
+  }
+  function stop(close=true){
+    if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+    if(close){cancelAnimationFrame(raf);}
+  }
+
+  window.openAR=function(){modal.classList.add('on');document.body.style.overflow='hidden';start();};
+  function closeAR(){stop();modal.classList.remove('on');document.body.style.overflow='';}
+
+  document.getElementById('arClose').onclick=closeAR;
+  document.getElementById('arFlip').onclick=()=>{facing=facing==='user'?'environment':'user';start();};
+
+  // 點小人物會跳
+  cv.addEventListener('pointerdown',e=>{
+    const r=cv.getBoundingClientRect(),scale=Math.min(r.width/cv.width,r.height/cv.height),
+          ox=(r.width-cv.width*scale)/2,oy=(r.height-cv.height*scale)/2,
+          px=(e.clientX-r.left-ox)/scale,py=(e.clientY-r.top-oy)/scale;
+    mascots.forEach(m=>{if(!m.box)return;const[b0,b1,b2,b3]=m.box;
+      if(px>b0&&px<b0+b2&&py>b1&&py<b1+b3&&m.jump===0){m.vy=-1.4;m.vx*=-1;}});
+  });
+
+  // 拍照：把目前畫面加上品牌字存成照片
+  document.getElementById('arShot').onclick=()=>{
+    if(!stream)return;
+    const c=document.createElement('canvas');c.width=cv.width;c.height=cv.height;
+    const x=c.getContext('2d');x.drawImage(cv,0,0);
+    const fs=Math.round(c.height*.04);
+    x.fillStyle='rgba(244,241,234,.92)';x.fillRect(0,c.height-fs*2.4,c.width,fs*2.4);
+    x.fillStyle='#1a1a18';x.font=`700 ${fs}px "Noto Serif TC",serif`;x.textBaseline='middle';
+    x.fillText('三 分 時 緒',fs*.9,c.height-fs*1.2);
+    x.font=`${Math.round(fs*.55)}px "DM Sans",sans-serif`;x.textAlign='right';x.fillStyle='rgba(26,26,24,.6)';
+    x.fillText('TASTE AS LANGUAGE',c.width-fs*.9,c.height-fs*1.2);
+    const url=c.toDataURL('image/png');
+    document.getElementById('arPhoto').src=url;document.getElementById('arSave').href=url;
+    document.getElementById('arPreview').classList.add('on');
+  };
+  document.getElementById('arAgain').onclick=()=>document.getElementById('arPreview').classList.remove('on');
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('on'))closeAR();});
+})();
+</script>
+
 </body>
 </html>
