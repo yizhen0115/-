@@ -320,6 +320,30 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
   .wc-tagline{opacity:.55}
   .hl,.hm,.hr{z-index:2}
 }
+
+/* ===== 電腦版導覽列美化 ===== */
+@media(min-width:961px){
+  #nav{height:70px;padding:0 4.5vw;border-bottom:none;
+    background:linear-gradient(90deg,rgba(237,232,213,.94) 0%,rgba(244,238,228,.94) 50%,rgba(222,228,218,.94) 100%);
+    box-shadow:0 6px 28px rgba(80,60,30,.08)}
+  #nav::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
+    background:linear-gradient(90deg,var(--sour) 0 33.33%,var(--sweet) 33.33% 66.66%,var(--bitter) 66.66% 100%);opacity:.85}
+  .nav-logo{font-size:18px;letter-spacing:.34em}
+  .nav-links{gap:clamp(8px,1.6vw,26px);position:absolute;left:50%;transform:translateX(-50%)}
+  .nav-links a{position:relative;padding:10px 6px;border-radius:0;background:transparent!important;font-family:'Noto Serif TC',serif;font-weight:500;font-size:15px;letter-spacing:.2em;opacity:.62}
+  .nav-links a::after{content:'';position:absolute;left:6px;right:6px;bottom:2px;height:2px;border-radius:2px;background:var(--c,var(--ink));transform:scaleX(0);transform-origin:center;transition:transform .3s}
+  .nav-links a:hover,.nav-links a.on{opacity:1;color:var(--c,var(--ink))}
+  .nav-links a:hover::after,.nav-links a.on::after{transform:scaleX(1)}
+  .nav-links li:nth-child(1) a{--c:var(--ink)}
+  .nav-links li:nth-child(2) a{--c:var(--sour)}
+  .nav-links li:nth-child(3) a{--c:var(--sweet)}
+  .nav-links li:nth-child(4) a{--c:var(--bitter)}
+  .nav-cart-btn{padding:12px 24px;font-size:13px;letter-spacing:.2em;gap:8px;background:var(--sweet);box-shadow:0 6px 18px rgba(160,88,30,.25);transition:transform .2s,box-shadow .2s,opacity .2s}
+  .nav-cart-btn:hover{opacity:1;transform:translateY(-2px);box-shadow:0 10px 24px rgba(160,88,30,.32)}
+  .nav-cart-btn svg{width:16px;height:16px}
+  .cbadge{width:20px;height:20px;font-size:11px;top:-6px;right:-6px;background:var(--ink);border:2px solid #f4eee4}
+  #hero .hl{padding-top:clamp(92px,12vh,116px)}
+}
 </style>
 </head>
 <body>
