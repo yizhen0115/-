@@ -966,6 +966,7 @@ renderOrderItems();
     <button id="arShare" class="pri">儲存 / 分享</button>
     <a id="arSave" download="三分時緒-情緒合照.png">下載照片</a>
     <button id="arAgain">再拍一張</button>
+    <button id="arHome">回到首頁</button>
   </div>
   <p class="tip">手機也可以長按照片 →「儲存影像」</p>
 </div>
@@ -1097,7 +1098,9 @@ renderOrderItems();
     document.getElementById('arPhoto').src=url;document.getElementById('arSave').href=url;
     photoBlob=null;c.toBlob(b=>{photoBlob=b;},'image/png');
     // 支援分享的手機：主按鈕是「儲存 / 分享」；不支援的（多半是電腦）：主按鈕是「下載照片」
-    const canShare=!!(navigator.canShare&&window.File&&navigator.canShare({files:[new File([''],'t.png',{type:'image/png'})]}));
+    const ua=navigator.userAgent,
+          isPhone=/Android|iPhone|iPad|iPod/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),
+          canShare=isPhone&&!!(navigator.canShare&&window.File&&navigator.canShare({files:[new File([''],'t.png',{type:'image/png'})]}));
     document.getElementById('arShare').style.display=canShare?'':'none';
     document.getElementById('arSave').style.display=canShare?'none':'';
     document.getElementById('arSave').classList.add('pri');
@@ -1114,6 +1117,7 @@ renderOrderItems();
     }catch(e){ if(e&&e.name!=='AbortError')save.click(); }
   };
   document.getElementById('arAgain').onclick=()=>document.getElementById('arPreview').classList.remove('on');
+  document.getElementById('arHome').onclick=()=>{document.getElementById('arPreview').classList.remove('on');closeAR();window.scrollTo({top:0,behavior:'smooth'});};
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('on'))closeAR();});
 })();
 </script>
