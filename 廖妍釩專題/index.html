@@ -290,15 +290,18 @@ footer{background:var(--ink);color:var(--cream);padding:68px 8vw 52px;display:gr
   #hero::after{content:'';position:absolute;right:-5vw;top:-10vh;width:30vw;height:30vw;max-width:460px;max-height:460px;border-radius:50%;background:var(--bitter-bg);opacity:.5;z-index:0}
   .hr-tri{display:none}
   /* 左側口味清單 */
-  .h-eyebrow{opacity:.6;color:var(--sweet)}
-  .h-rule{width:120px;background:var(--ink);opacity:.25}
-  .h-flavor-list{gap:26px}
+  .h-eyebrow{opacity:.7;color:var(--sweet);font-size:clamp(13px,1vw,16px);letter-spacing:.28em;margin-bottom:10px}
+  .h-rule{width:160px;background:var(--ink);opacity:.25;margin-bottom:44px}
+  .h-flavor-list{gap:clamp(30px,4.2vh,42px)}
+  .hfl{gap:16px}
+  .hfl-dot{width:16px;height:16px}
+  .hfl-sub{font-size:clamp(11px,.8vw,13px);letter-spacing:.24em;margin-top:5px}
   .hfl{padding-left:14px;border-left:2px solid transparent;transition:border-color .25s,transform .25s}
   .hfl:hover{opacity:1;transform:translateX(4px)}
   .hfl:nth-child(1):hover{border-color:var(--sour)}
   .hfl:nth-child(2):hover{border-color:var(--sweet)}
   .hfl:nth-child(3):hover{border-color:var(--bitter)}
-  .hfl-zh{font-size:20px}
+  .hfl-zh{font-size:clamp(26px,2vw,34px);letter-spacing:.14em}
   /* 吉祥物：各自有專屬色圓 */
   .hl-deco{width:auto;height:auto;margin-left:0}
   .hl-deco::before{display:none}
